@@ -26,7 +26,8 @@ import {
   FileText,
   DollarSign,
   Calculator,
-  Save
+  Save,
+  Star
 } from 'lucide-react';
 import { JournalData, defaultJournalData } from '../utils/journalGenerator';
 import { saveToLocalStorage, loadFromLocalStorage } from '../utils/localStorage';
@@ -130,6 +131,105 @@ const JournalForm: React.FC<JournalFormProps> = ({ onDataChange, onReset }) => {
       e.preventDefault();
       addCustomTag();
     }
+  };
+
+  const calculateTradeScore = (): number => {
+    let score = 0;
+    
+    // Base score for having essential fields filled
+    if (formData.setupType.trim()) score += 0.5;
+    if (formData.entry) score += 0.5;
+    if (formData.stopLoss) score += 0.5;
+    if (formData.takeProfit1) score += 0.5;
+    
+    // Calculate R:R ratio if all price fields are available
+    const entry = parseFloat(formData.entry);
+    const stopLoss = parseFloat(formData.stopLoss);
+    const tp1 = parseFloat(formData.takeProfit1);
+    
+    if (entry && stopLoss && tp1) {
+      const isLong = formData.side === 'LONG';
+      const risk = isLong ? (entry - stopLoss) : (stopLoss - entry);
+      const reward = isLong ? (tp1 - entry) : (entry - tp1);
+      
+      if (risk > 0 && reward > 0) {
+        const rrRatio = reward / risk;
+        
+        // Score based on R:R ratio
+        if (rrRatio >= 3) score += 1.5; // Excellent R:R
+        else if (rrRatio >= 2) score += 1.2; // Good R:R
+        else if (rrRatio >= 1.5) score += 1; // Acceptable R:R
+        else if (rrRatio >= 1) score += 0.5; // Minimal R:R
+      }
+    }
+    
+    // Bonus points for thorough analysis
+    if (formData.bullets.filter(b => b.trim()).length >= 3) score += 0.5;
+    if (formData.positives.filter(p => p.trim()).length >= 2) score += 0.3;
+    if (formData.negatives.filter(n => n.trim()).length >= 1) score += 0.2;
+    if (formData.tags.length >= 3) score += 0.3;
+    
+    // Bonus for comprehensive setup
+    if (formData.takeProfit2) score += 0.2;
+    if (formData.contracts) score += 0.1;
+    if (formData.rewardPotential) score += 0.1;
+    
+    return Math.min(5, Math.max(0, score));
+  };
+
+  const renderStarRating = (score: number) => {
+    const stars = [];
+    const fullStars = Math.floor(score);
+    const hasHalfStar = score % 1 >= 0.5;
+    
+    for (let i = 0; i < 5; i++) {
+      if (i < fullStars) {
+        stars.push(
+          <Star 
+            key={i} 
+            size={20} 
+            fill="#fbbf24" 
+            color="#fbbf24" 
+            className="animate-pulse-slow"
+          />
+        );
+      } else if (i === fullStars && hasHalfStar) {
+        stars.push(
+          <Star 
+            key={i} 
+            size={20} 
+            fill="url(#half-star)" 
+            color="#fbbf24"
+          />
+        );
+      } else {
+        stars.push(
+          <Star 
+            key={i} 
+            size={20} 
+            fill="none" 
+            color="#d1d5db"
+          />
+        );
+      }
+    }
+    
+    return (
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+        <svg width="0" height="0">
+          <defs>
+            <linearGradient id="half-star">
+              <stop offset="50%" stopColor="#fbbf24" />
+              <stop offset="50%" stopColor="#d1d5db" />
+            </linearGradient>
+          </defs>
+        </svg>
+        {stars}
+        <Typography variant="body2" sx={{ ml: 1, color: 'text.secondary' }}>
+          ({score.toFixed(1)}/5.0)
+        </Typography>
+      </Box>
+    );
   };
 
   const resetForm = () => {
@@ -288,6 +388,28 @@ const JournalForm: React.FC<JournalFormProps> = ({ onDataChange, onReset }) => {
             Reset Journal
           </Button>
         </Box>
+      </Box>
+
+      {/* Auto-scoring section */}
+      <Box sx={{ 
+        mb: 3, 
+        p: 2, 
+        background: 'rgba(255,255,255,0.05)',
+        borderRadius: 2,
+        border: '1px solid rgba(255,255,255,0.1)'
+      }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Star size={20} color="#fbbf24" className="animate-pulse-slow" />
+            <Typography variant="subtitle1" fontWeight="medium">
+              Trade Setup Score
+            </Typography>
+          </Box>
+          {renderStarRating(calculateTradeScore())}
+        </Box>
+        <Typography variant="body2" sx={{ mt: 1, color: 'text.secondary' }}>
+          Score based on R:R ratio, analysis depth, and setup completeness
+        </Typography>
       </Box>
 
       <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, mb: 3 }}>
