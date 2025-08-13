@@ -17,7 +17,6 @@ import Checklist from '../components/Checklist';
 import JournalForm from '../components/JournalForm';
 import JournalPreview from '../components/JournalPreview';
 import Analyzer from '../components/Analyzer';
-import EconomicCalendarBanner from '../components/EconomicCalendarBanner';
 import { JournalData, defaultJournalData } from '../utils/journalGenerator';
 
 const MainContent: React.FC = () => {
@@ -94,9 +93,6 @@ const MainContent: React.FC = () => {
 
         {currentTab === 0 && (
           <>
-            {/* Economic Calendar Banner */}
-            <EconomicCalendarBanner />
-            
             <Box sx={{ 
               display: 'flex', 
               flexDirection: { xs: 'column', lg: 'row' }, 
