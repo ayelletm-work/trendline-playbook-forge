@@ -36,6 +36,9 @@ const InstrumentSelect: React.FC<InstrumentSelectProps> = ({ value, onChange }) 
     onChange(event.target.value);
   };
 
+  // Ensure value is never undefined
+  const safeValue = value || '';
+
   return (
     <FormControl fullWidth variant="outlined">
       <InputLabel id="instrument-label">
@@ -44,7 +47,7 @@ const InstrumentSelect: React.FC<InstrumentSelectProps> = ({ value, onChange }) 
       </InputLabel>
       <Select
         labelId="instrument-label"
-        value={value}
+        value={safeValue}
         onChange={handleChange}
         label="Instrument"
         sx={{

@@ -25,6 +25,9 @@ const TimeframeSelect: React.FC<TimeframeSelectProps> = ({ value, onChange }) =>
     onChange(event.target.value);
   };
 
+  // Ensure value is never undefined
+  const safeValue = value || '';
+
   return (
     <FormControl fullWidth variant="outlined">
       <InputLabel id="timeframe-label">
@@ -33,7 +36,7 @@ const TimeframeSelect: React.FC<TimeframeSelectProps> = ({ value, onChange }) =>
       </InputLabel>
       <Select
         labelId="timeframe-label"
-        value={value}
+        value={safeValue}
         onChange={handleChange}
         label="Timeframe"
         sx={{

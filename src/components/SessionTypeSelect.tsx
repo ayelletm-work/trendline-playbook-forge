@@ -25,6 +25,9 @@ const SessionTypeSelect: React.FC<SessionTypeSelectProps> = ({ value, onChange }
     onChange(event.target.value);
   };
 
+  // Ensure value is never undefined
+  const safeValue = value || '';
+
   return (
     <FormControl fullWidth variant="outlined">
       <InputLabel id="session-type-label">
@@ -33,7 +36,7 @@ const SessionTypeSelect: React.FC<SessionTypeSelectProps> = ({ value, onChange }
       </InputLabel>
       <Select
         labelId="session-type-label"
-        value={value}
+        value={safeValue}
         onChange={handleChange}
         label="Session Type"
         sx={{

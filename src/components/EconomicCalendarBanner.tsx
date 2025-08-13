@@ -3,10 +3,11 @@ import { Box, Typography, Paper } from '@mui/material';
 import { Calendar } from 'lucide-react';
 
 // Easy URL replacement - change this constant to switch calendar providers
-const ECONOMIC_CALENDAR_URL = 'https://www.forexfactory.com/calendar?week=this';
+// Forex Factory blocks iframe embedding, so using an alternative
+const ECONOMIC_CALENDAR_URL = 'https://widget.investing.com/economic-calendar/113/1.html';
 // Alternative URLs you can use:
 // const ECONOMIC_CALENDAR_URL = 'https://www.myfxbook.com/forex-economic-calendar';
-// const ECONOMIC_CALENDAR_URL = 'https://www.investing.com/economic-calendar/';
+// const ECONOMIC_CALENDAR_URL = 'https://s3.tradingview.com/external-embedding/embed-widget-economic-calendar.html';
 
 const EconomicCalendarBanner: React.FC = () => {
   return (
