@@ -31,7 +31,6 @@ const SessionTypeSelect: React.FC<SessionTypeSelectProps> = ({ value, onChange }
   return (
     <FormControl fullWidth variant="outlined">
       <InputLabel id="session-type-label">
-        <Clock size={16} style={{ marginRight: 8, verticalAlign: 'middle' }} />
         Session Type
       </InputLabel>
       <Select

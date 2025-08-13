@@ -42,7 +42,6 @@ const InstrumentSelect: React.FC<InstrumentSelectProps> = ({ value, onChange }) 
   return (
     <FormControl fullWidth variant="outlined">
       <InputLabel id="instrument-label">
-        <TrendingUp size={16} style={{ marginRight: 8, verticalAlign: 'middle' }} />
         Instrument
       </InputLabel>
       <Select

@@ -31,7 +31,6 @@ const TimeframeSelect: React.FC<TimeframeSelectProps> = ({ value, onChange }) =>
   return (
     <FormControl fullWidth variant="outlined">
       <InputLabel id="timeframe-label">
-        <BarChart size={16} style={{ marginRight: 8, verticalAlign: 'middle' }} />
         Timeframe
       </InputLabel>
       <Select
