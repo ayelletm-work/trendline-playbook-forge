@@ -93,10 +93,7 @@ const MainContent: React.FC = () => {
 
         {currentTab === 0 && (
           <>
-            <Box sx={{ mb: 4 }} className="animate-fade-in">
-              <Checklist />
-            </Box>
-
+           
             <Box sx={{ 
               display: 'flex', 
               flexDirection: { xs: 'column', lg: 'row' }, 
