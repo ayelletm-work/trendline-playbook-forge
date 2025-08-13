@@ -288,7 +288,8 @@ const Checklist: React.FC = () => {
                       </Typography>
                     }
                     sx={{ 
-                      display: 'block', 
+                      display: 'flex', 
+                      alignItems: 'center',
                       mb: 0.5,
                       transition: 'all 0.3s ease',
                       '&:hover': {
