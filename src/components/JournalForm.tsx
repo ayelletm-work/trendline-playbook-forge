@@ -283,21 +283,27 @@ const JournalForm: React.FC<JournalFormProps> = ({ onDataChange, onReset }) => {
           />
         </Box>
         <Box sx={{ flex: '1 1 200px', minWidth: 200, position: 'relative' }}>
-          <Clock size={20} style={{ position: 'absolute', left: 12, top: 12, zIndex: 1, color: '#6b7280' }} />
-          <TextField
-            fullWidth
-            label="Session"
-            value={formData.session}
-            onChange={(e) => handleInputChange('session', e.target.value)}
-            size="small"
-            sx={{ 
-              '& .MuiOutlinedInput-root': { 
-                paddingLeft: '40px',
-                transition: 'all 0.3s ease',
-                '&:hover': { boxShadow: 'var(--shadow-soft)' }
-              } 
-            }}
-          />
+          <Clock size={20} style={{ position: 'absolute', left: 12, top: 12, zIndex: 2, color: '#6b7280' }} />
+          <FormControl fullWidth size="small">
+            <InputLabel>Session</InputLabel>
+            <Select
+              value={formData.session}
+              onChange={(e) => handleInputChange('session', e.target.value)}
+              label="Session"
+              sx={{ 
+                '& .MuiOutlinedInput-root': { 
+                  paddingLeft: '40px',
+                  transition: 'all 0.3s ease',
+                  '&:hover': { boxShadow: 'var(--shadow-soft)' }
+                } 
+              }}
+            >
+              <MenuItem value="Asia">Asia</MenuItem>
+              <MenuItem value="New York">New York</MenuItem>
+              <MenuItem value="London">London</MenuItem>
+              <MenuItem value="Tokyo">Tokyo</MenuItem>
+            </Select>
+          </FormControl>
         </Box>
         <Box sx={{ flex: '1 1 100%', minWidth: 200, position: 'relative' }}>
           <Target size={20} style={{ position: 'absolute', left: 12, top: 12, zIndex: 1, color: '#6b7280' }} />

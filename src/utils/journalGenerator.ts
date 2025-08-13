@@ -55,7 +55,7 @@ ${tagsList}`;
 
 export const defaultJournalData: JournalData = {
   date: new Date().toLocaleDateString(),
-  session: 'London Open',
+  session: 'London',
   setupType: '4H MGC Trendline Break',
   bullets: [
     'Clean trendline formed over multiple touches',
