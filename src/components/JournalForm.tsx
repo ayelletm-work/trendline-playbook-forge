@@ -33,10 +33,22 @@ import { JournalData, defaultJournalData } from '../utils/journalGenerator';
 import { saveToLocalStorage, loadFromLocalStorage } from '../utils/localStorage';
 import { HistoricalTrade } from '../types/trade';
 import { saveHistoricalTrade } from '../utils/tradeManager';
+import SessionTypeSelect from './SessionTypeSelect';
+import InstrumentSelect from './InstrumentSelect';
+import TimeframeSelect from './TimeframeSelect';
+import PlaybookSelect from './PlaybookSelect';
 
 interface JournalFormProps {
   onDataChange: (data: JournalData) => void;
   onReset: () => void;
+}
+
+interface PlaybookData {
+  id: string;
+  name: string;
+  description: string;
+  bullets: string[];
+  defaultGrade: number;
 }
 
 const predefinedTags = [
@@ -259,6 +271,28 @@ const JournalForm: React.FC<JournalFormProps> = ({ onDataChange, onReset }) => {
     alert('Trade saved to history! You can update the outcome and R:R ratio in the Analyzer.');
   };
 
+  const handlePlaybookChange = (playbook: PlaybookData | null) => {
+    if (playbook && playbook.id) {
+      setFormData(prev => ({
+        ...prev,
+        playbook: playbook.name,
+        bullets: playbook.bullets.length > 0 ? playbook.bullets : prev.bullets
+      }));
+    } else {
+      setFormData(prev => ({
+        ...prev,
+        playbook: ''
+      }));
+    }
+  };
+
+  const handlePlaybookGradeChange = (grade: number) => {
+    setFormData(prev => ({
+      ...prev,
+      playbookGrade: grade
+    }));
+  };
+
   const renderArrayInput = (
     field: 'bullets' | 'positives' | 'negatives',
     label: string,
@@ -472,6 +506,44 @@ const JournalForm: React.FC<JournalFormProps> = ({ onDataChange, onReset }) => {
             }}
           />
         </Box>
+      </Box>
+
+      {/* New Select Components */}
+      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, mb: 3 }}>
+        <Box sx={{ flex: '1 1 200px', minWidth: 200 }}>
+          <SessionTypeSelect
+            value={formData.sessionType}
+            onChange={(value) => handleInputChange('sessionType', value)}
+          />
+        </Box>
+        <Box sx={{ flex: '1 1 200px', minWidth: 200 }}>
+          <InstrumentSelect
+            value={formData.instrument}
+            onChange={(value) => handleInputChange('instrument', value)}
+          />
+        </Box>
+        <Box sx={{ flex: '1 1 200px', minWidth: 200 }}>
+          <TimeframeSelect
+            value={formData.timeframe}
+            onChange={(value) => handleInputChange('timeframe', value)}
+          />
+        </Box>
+      </Box>
+
+      {/* Playbook Select */}
+      <Box sx={{ mb: 3 }}>
+        <PlaybookSelect
+          value={formData.playbook ? 
+            (formData.playbook === 'Trendline Bounce Setup' ? 'trendline-bounce' :
+             formData.playbook === 'Breakout & Retest' ? 'breakout-retest' :
+             formData.playbook === 'Support/Resistance Reversal' ? 'support-resistance-reversal' :
+             formData.playbook === 'Momentum Continuation' ? 'momentum-continuation' : '') 
+            : ''
+          }
+          onPlaybookChange={handlePlaybookChange}
+          onGradeChange={handlePlaybookGradeChange}
+          grade={formData.playbookGrade}
+        />
       </Box>
 
       <Box sx={{ mt: 3 }}>

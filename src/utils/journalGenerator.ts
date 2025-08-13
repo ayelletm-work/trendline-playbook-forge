@@ -1,6 +1,11 @@
 export interface JournalData {
   date: string;
   session: string;
+  sessionType: string;
+  instrument: string;
+  timeframe: string;
+  playbook: string;
+  playbookGrade: number;
   setupType: string;
   bullets: string[];
   side: 'LONG' | 'SHORT';
@@ -25,6 +30,10 @@ export const generateJournalText = (data: JournalData): string => {
 
   return `📅 Date: ${data.date}
 🕒 Session: ${data.session}
+📊 Session Type: ${data.sessionType}
+💰 Instrument: ${data.instrument}
+⏰ Timeframe: ${data.timeframe}
+📖 Playbook: ${data.playbook} ${data.playbookGrade > 0 ? `(${data.playbookGrade}/5 ⭐)` : ''}
 Setup Type: ${data.setupType}
 ${bulletPoints}
 
@@ -56,6 +65,11 @@ ${tagsList}`;
 export const defaultJournalData: JournalData = {
   date: new Date().toLocaleDateString(),
   session: 'London',
+  sessionType: '',
+  instrument: '',
+  timeframe: '',
+  playbook: '',
+  playbookGrade: 0,
   setupType: '4H MGC Trendline Break',
   bullets: [
     'Clean trendline formed over multiple touches',
