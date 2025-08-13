@@ -9,6 +9,7 @@ export interface JournalData {
   takeProfit1: string;
   takeProfit2: string;
   contracts: string;
+  accountBalance: string;
   risk: string;
   rewardPotential: string;
   positives: string[];
@@ -67,7 +68,8 @@ export const defaultJournalData: JournalData = {
   takeProfit1: '1.2850',
   takeProfit2: '1.2950',
   contracts: '0.5 lots',
-  risk: '$500',
+  accountBalance: '5000',
+  risk: '$100.00',
   rewardPotential: '3:1 RR',
   positives: [
     'Waited for proper confirmation',

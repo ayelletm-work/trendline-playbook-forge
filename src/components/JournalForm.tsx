@@ -23,7 +23,9 @@ import {
   PlusCircle,
   MinusCircle,
   Hash,
-  FileText
+  FileText,
+  DollarSign,
+  Calculator
 } from 'lucide-react';
 import { JournalData, defaultJournalData } from '../utils/journalGenerator';
 import { saveToLocalStorage, loadFromLocalStorage } from '../utils/localStorage';
@@ -44,6 +46,7 @@ const JournalForm: React.FC<JournalFormProps> = ({ onDataChange, onReset }) => {
   const [formData, setFormData] = useState<JournalData>(() =>
     loadFromLocalStorage('journal-form-data', defaultJournalData)
   );
+  const [isRiskManuallyEdited, setIsRiskManuallyEdited] = useState(false);
 
   useEffect(() => {
     saveToLocalStorage('journal-form-data', formData);
@@ -51,7 +54,23 @@ const JournalForm: React.FC<JournalFormProps> = ({ onDataChange, onReset }) => {
   }, [formData, onDataChange]);
 
   const handleInputChange = (field: keyof JournalData, value: any) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+    setFormData(prev => {
+      const newData = { ...prev, [field]: value };
+      
+      // Auto-calculate risk when account balance changes
+      if (field === 'accountBalance' && !isRiskManuallyEdited) {
+        const balance = parseFloat(value) || 0;
+        const calculatedRisk = balance * 0.02;
+        newData.risk = `$${calculatedRisk.toFixed(2)}`;
+      }
+      
+      return newData;
+    });
+  };
+
+  const handleRiskChange = (value: string) => {
+    setIsRiskManuallyEdited(true);
+    setFormData(prev => ({ ...prev, risk: value }));
   };
 
   const addArrayItem = (field: 'bullets' | 'positives' | 'negatives') => {
@@ -86,6 +105,7 @@ const JournalForm: React.FC<JournalFormProps> = ({ onDataChange, onReset }) => {
 
   const resetForm = () => {
     setFormData(defaultJournalData);
+    setIsRiskManuallyEdited(false);
     onReset();
   };
 
@@ -361,19 +381,44 @@ const JournalForm: React.FC<JournalFormProps> = ({ onDataChange, onReset }) => {
             }}
           />
         </Box>
-        <Box sx={{ flex: '1 1 200px', minWidth: 200 }}>
+        <Box sx={{ flex: '1 1 200px', minWidth: 200, position: 'relative' }}>
+          <DollarSign size={20} style={{ position: 'absolute', left: 12, top: 12, zIndex: 1, color: '#6b7280' }} />
           <TextField
             fullWidth
-            label="Risk"
-            value={formData.risk}
-            onChange={(e) => handleInputChange('risk', e.target.value)}
+            label="Account Balance"
+            value={formData.accountBalance}
+            onChange={(e) => {
+              handleInputChange('accountBalance', e.target.value);
+              setIsRiskManuallyEdited(false); // Reset manual edit flag when balance changes
+            }}
             size="small"
+            type="number"
             sx={{ 
-              '& .MuiOutlinedInput-root': {
+              '& .MuiOutlinedInput-root': { 
+                paddingLeft: '40px',
                 transition: 'all 0.3s ease',
                 '&:hover': { boxShadow: 'var(--shadow-soft)' }
-              }
+              } 
             }}
+          />
+        </Box>
+        <Box sx={{ flex: '1 1 200px', minWidth: 200, position: 'relative' }}>
+          <Calculator size={20} style={{ position: 'absolute', left: 12, top: 12, zIndex: 1, color: '#6b7280' }} />
+          <TextField
+            fullWidth
+            label="Risk (2% Auto-calc)"
+            value={formData.risk}
+            onChange={(e) => handleRiskChange(e.target.value)}
+            size="small"
+            sx={{ 
+              '& .MuiOutlinedInput-root': { 
+                paddingLeft: '40px',
+                transition: 'all 0.3s ease',
+                '&:hover': { boxShadow: 'var(--shadow-soft)' },
+                backgroundColor: isRiskManuallyEdited ? 'rgba(255, 193, 7, 0.1)' : 'rgba(34, 197, 94, 0.1)'
+              } 
+            }}
+            helperText={isRiskManuallyEdited ? "Manually edited" : "Auto-calculated (2% of balance)"}
           />
         </Box>
         <Box sx={{ flex: '1 1 200px', minWidth: 200 }}>
