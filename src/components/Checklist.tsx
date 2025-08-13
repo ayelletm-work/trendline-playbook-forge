@@ -159,9 +159,6 @@ const Checklist: React.FC = () => {
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             <CheckCircle className="animate-pulse-slow" size={24} color="#3b82f6" />
-            <Typography variant="h6" component="h2" fontWeight="bold">
-              Trading Checklist
-            </Typography>
           </Box>
           <Button
             variant="outlined"
