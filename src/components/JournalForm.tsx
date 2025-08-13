@@ -49,6 +49,7 @@ const JournalForm: React.FC<JournalFormProps> = ({ onDataChange, onReset }) => {
   const [formData, setFormData] = useState<JournalData>(() =>
     loadFromLocalStorage('journal-form-data', defaultJournalData)
   );
+  const [newTagInput, setNewTagInput] = useState('');
   const [isRiskManuallyEdited, setIsRiskManuallyEdited] = useState(false);
 
   useEffect(() => {
@@ -100,10 +101,35 @@ const JournalForm: React.FC<JournalFormProps> = ({ onDataChange, onReset }) => {
   const toggleTag = (tag: string) => {
     setFormData(prev => ({
       ...prev,
-      tags: prev.tags.includes(tag)
+      tags: prev.tags.includes(tag) 
         ? prev.tags.filter(t => t !== tag)
         : [...prev.tags, tag]
     }));
+  };
+
+  const addCustomTag = () => {
+    const trimmedTag = newTagInput.trim();
+    if (trimmedTag && !formData.tags.includes(trimmedTag)) {
+      setFormData(prev => ({
+        ...prev,
+        tags: [...prev.tags, trimmedTag]
+      }));
+      setNewTagInput('');
+    }
+  };
+
+  const removeTag = (tagToRemove: string) => {
+    setFormData(prev => ({
+      ...prev,
+      tags: prev.tags.filter(tag => tag !== tagToRemove)
+    }));
+  };
+
+  const handleTagInputKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      addCustomTag();
+    }
   };
 
   const resetForm = () => {
@@ -497,28 +523,81 @@ const JournalForm: React.FC<JournalFormProps> = ({ onDataChange, onReset }) => {
             🧠 Tags
           </Typography>
         </Box>
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-          {predefinedTags.map((tag) => (
-            <Chip
-              key={tag}
-              label={tag}
-              onClick={() => toggleTag(tag)}
-              color={formData.tags.includes(tag) ? 'primary' : 'default'}
-              variant={formData.tags.includes(tag) ? 'filled' : 'outlined'}
-              size="small"
-              sx={{
-                transition: 'all 0.3s ease',
-                '&:hover': {
-                  transform: 'scale(1.05)',
-                  boxShadow: 'var(--shadow-soft)'
-                },
-                ...(formData.tags.includes(tag) && {
-                  background: 'var(--gradient-primary)',
-                  color: 'white'
-                })
-              }}
-            />
-          ))}
+        
+        {/* Custom Tag Input */}
+        <Box sx={{ display: 'flex', gap: 1, mb: 2 }}>
+          <TextField
+            size="small"
+            placeholder="Add custom tag..."
+            value={newTagInput}
+            onChange={(e) => setNewTagInput(e.target.value)}
+            onKeyPress={handleTagInputKeyPress}
+            sx={{ flex: 1, maxWidth: 200 }}
+          />
+          <Button
+            variant="outlined"
+            size="small"
+            onClick={addCustomTag}
+            disabled={!newTagInput.trim()}
+            sx={{ minWidth: 'auto', px: 2 }}
+          >
+            Add
+          </Button>
+        </Box>
+
+        {/* Selected Tags */}
+        {formData.tags.length > 0 && (
+          <Box sx={{ mb: 2 }}>
+            <Typography variant="body2" sx={{ mb: 1, color: 'text.secondary' }}>
+              Selected Tags:
+            </Typography>
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+              {formData.tags.map((tag) => (
+                <Chip
+                  key={tag}
+                  label={tag}
+                  onDelete={() => removeTag(tag)}
+                  color="primary"
+                  variant="filled"
+                  size="small"
+                  sx={{
+                    background: 'var(--gradient-primary)',
+                    color: 'white'
+                  }}
+                />
+              ))}
+            </Box>
+          </Box>
+        )}
+
+        {/* Predefined Tags */}
+        <Box>
+          <Typography variant="body2" sx={{ mb: 1, color: 'text.secondary' }}>
+            Quick Select:
+          </Typography>
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+            {predefinedTags.map((tag) => (
+              <Chip
+                key={tag}
+                label={tag}
+                onClick={() => toggleTag(tag)}
+                color={formData.tags.includes(tag) ? 'primary' : 'default'}
+                variant={formData.tags.includes(tag) ? 'filled' : 'outlined'}
+                size="small"
+                sx={{
+                  transition: 'all 0.3s ease',
+                  '&:hover': {
+                    transform: 'scale(1.05)',
+                    boxShadow: 'var(--shadow-soft)'
+                  },
+                  ...(formData.tags.includes(tag) && {
+                    background: 'var(--gradient-primary)',
+                    color: 'white'
+                  })
+                }}
+              />
+            ))}
+          </Box>
         </Box>
       </Box>
     </Paper>
