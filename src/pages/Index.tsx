@@ -6,6 +6,8 @@ import {
   Toolbar,
   IconButton,
   Box,
+  Tabs,
+  Tab,
 } from '@mui/material';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
@@ -14,11 +16,13 @@ import { ThemeProvider, useTheme } from '../components/ThemeProvider';
 import Checklist from '../components/Checklist';
 import JournalForm from '../components/JournalForm';
 import JournalPreview from '../components/JournalPreview';
+import Analyzer from '../components/Analyzer';
 import { JournalData, defaultJournalData } from '../utils/journalGenerator';
 
 const MainContent: React.FC = () => {
   const { darkMode, toggleDarkMode } = useTheme();
   const [journalData, setJournalData] = useState<JournalData>(defaultJournalData);
+  const [currentTab, setCurrentTab] = useState(0);
 
   const handleJournalDataChange = (data: JournalData) => {
     setJournalData(data);
@@ -69,25 +73,53 @@ const MainContent: React.FC = () => {
           minHeight: 'calc(100vh - 64px)'
         }}
       >
-        <Box sx={{ mb: 4 }} className="animate-fade-in">
-          <Checklist />
+        <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 4 }}>
+          <Tabs 
+            value={currentTab} 
+            onChange={(_, newValue) => setCurrentTab(newValue)}
+            sx={{
+              '& .MuiTab-root': {
+                transition: 'all 0.3s ease',
+                '&:hover': {
+                  transform: 'translateY(-2px)'
+                }
+              }
+            }}
+          >
+            <Tab label="Trading Journal" />
+            <Tab label="Playbook Analyzer" />
+          </Tabs>
         </Box>
 
-        <Box sx={{ 
-          display: 'flex', 
-          flexDirection: { xs: 'column', lg: 'row' }, 
-          gap: 4 
-        }}>
-          <Box sx={{ flex: 1 }}>
-            <JournalForm
-              onDataChange={handleJournalDataChange}
-              onReset={handleJournalReset}
-            />
+        {currentTab === 0 && (
+          <>
+            <Box sx={{ mb: 4 }} className="animate-fade-in">
+              <Checklist />
+            </Box>
+
+            <Box sx={{ 
+              display: 'flex', 
+              flexDirection: { xs: 'column', lg: 'row' }, 
+              gap: 4 
+            }}>
+              <Box sx={{ flex: 1 }}>
+                <JournalForm
+                  onDataChange={handleJournalDataChange}
+                  onReset={handleJournalReset}
+                />
+              </Box>
+              <Box sx={{ flex: 1 }}>
+                <JournalPreview journalData={journalData} />
+              </Box>
+            </Box>
+          </>
+        )}
+
+        {currentTab === 1 && (
+          <Box className="animate-fade-in">
+            <Analyzer />
           </Box>
-          <Box sx={{ flex: 1 }}>
-            <JournalPreview journalData={journalData} />
-          </Box>
-        </Box>
+        )}
       </Container>
     </>
   );

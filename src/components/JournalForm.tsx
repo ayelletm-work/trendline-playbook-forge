@@ -25,10 +25,13 @@ import {
   Hash,
   FileText,
   DollarSign,
-  Calculator
+  Calculator,
+  Save
 } from 'lucide-react';
 import { JournalData, defaultJournalData } from '../utils/journalGenerator';
 import { saveToLocalStorage, loadFromLocalStorage } from '../utils/localStorage';
+import { HistoricalTrade } from '../types/trade';
+import { saveHistoricalTrade } from '../utils/tradeManager';
 
 interface JournalFormProps {
   onDataChange: (data: JournalData) => void;
@@ -107,6 +110,27 @@ const JournalForm: React.FC<JournalFormProps> = ({ onDataChange, onReset }) => {
     setFormData(defaultJournalData);
     setIsRiskManuallyEdited(false);
     onReset();
+  };
+
+  const saveAsTrade = () => {
+    const trade: HistoricalTrade = {
+      id: Date.now().toString(),
+      date: formData.date,
+      setupType: formData.setupType,
+      side: formData.side,
+      entry: formData.entry,
+      stopLoss: formData.stopLoss,
+      takeProfit1: formData.takeProfit1,
+      takeProfit2: formData.takeProfit2,
+      outcome: 'Pending',
+      rrRatio: 0,
+      tags: formData.tags,
+      createdAt: new Date().toISOString(),
+      notes: `Bullets: ${formData.bullets.join(', ')}\nPositives: ${formData.positives.join(', ')}\nNegatives: ${formData.negatives.join(', ')}`
+    };
+    
+    saveHistoricalTrade(trade);
+    alert('Trade saved to history! You can update the outcome and R:R ratio in the Analyzer.');
   };
 
   const renderArrayInput = (
@@ -205,20 +229,39 @@ const JournalForm: React.FC<JournalFormProps> = ({ onDataChange, onReset }) => {
             Journal Entry Form
           </Typography>
         </Box>
-        <Button 
-          variant="outlined" 
-          onClick={resetForm} 
-          size="small"
-          sx={{
-            transition: 'all 0.3s ease',
-            '&:hover': {
-              transform: 'scale(1.05)',
-              boxShadow: 'var(--shadow-medium)'
-            }
-          }}
-        >
-          Reset Journal
-        </Button>
+        <Box sx={{ display: 'flex', gap: 1 }}>
+          <Button 
+            variant="outlined" 
+            startIcon={<Save size={16} />}
+            onClick={saveAsTrade} 
+            size="small"
+            sx={{
+              transition: 'all 0.3s ease',
+              '&:hover': {
+                transform: 'scale(1.05)',
+                background: 'var(--gradient-success)',
+                color: 'white',
+                borderColor: 'transparent'
+              }
+            }}
+          >
+            Save as Trade
+          </Button>
+          <Button 
+            variant="outlined" 
+            onClick={resetForm} 
+            size="small"
+            sx={{
+              transition: 'all 0.3s ease',
+              '&:hover': {
+                transform: 'scale(1.05)',
+                boxShadow: 'var(--shadow-medium)'
+              }
+            }}
+          >
+            Reset Journal
+          </Button>
+        </Box>
       </Box>
 
       <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, mb: 3 }}>
