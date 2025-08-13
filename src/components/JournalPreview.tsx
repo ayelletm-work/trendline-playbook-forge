@@ -111,7 +111,7 @@ const JournalPreview: React.FC<JournalPreviewProps> = ({ journalData }) => {
           borderColor: 'divider',
           borderRadius: 2,
           p: 3,
-          fontFamily: 'monospace',
+          fontFamily: 'Titillium Web, sans-serif',
           fontSize: '0.875rem',
           lineHeight: 1.6,
           whiteSpace: 'pre-wrap',
@@ -125,6 +125,7 @@ const JournalPreview: React.FC<JournalPreviewProps> = ({ journalData }) => {
             transition: 'all 0.3s ease'
           }
         }}
+        className="font-titillium"
       >
         {journalText}
       </Box>
