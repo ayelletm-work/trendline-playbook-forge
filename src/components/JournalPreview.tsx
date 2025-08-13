@@ -7,6 +7,7 @@ import {
 } from '@mui/material';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import DownloadIcon from '@mui/icons-material/Download';
+import { Eye, Copy, Download } from 'lucide-react';
 import { JournalData, generateJournalText } from '../utils/journalGenerator';
 
 interface JournalPreviewProps {
@@ -39,25 +40,64 @@ const JournalPreview: React.FC<JournalPreviewProps> = ({ journalData }) => {
   };
 
   return (
-    <Paper elevation={2} sx={{ p: 3 }}>
+    <Paper 
+      elevation={3} 
+      sx={{ 
+        p: 3,
+        background: 'var(--gradient-accent)',
+        position: 'relative',
+        overflow: 'hidden',
+        '&::before': {
+          content: '""',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          height: '4px',
+          background: 'var(--gradient-success)',
+        }
+      }}
+      className="animate-fade-in"
+    >
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-        <Typography variant="h6" component="h2">
-          Journal Preview
-        </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <Eye className="animate-pulse-slow" size={24} color="#16a34a" />
+          <Typography variant="h6" component="h2" fontWeight="bold">
+            Journal Preview
+          </Typography>
+        </Box>
         <Box sx={{ display: 'flex', gap: 1 }}>
           <Button
             variant="outlined"
-            startIcon={<ContentCopyIcon />}
+            startIcon={<Copy size={16} />}
             onClick={copyToClipboard}
             size="small"
+            sx={{
+              transition: 'all 0.3s ease',
+              '&:hover': {
+                transform: 'scale(1.05)',
+                background: 'var(--gradient-primary)',
+                color: 'white',
+                borderColor: 'transparent'
+              }
+            }}
           >
             Copy
           </Button>
           <Button
             variant="outlined"
-            startIcon={<DownloadIcon />}
+            startIcon={<Download size={16} />}
             onClick={downloadAsFile}
             size="small"
+            sx={{
+              transition: 'all 0.3s ease',
+              '&:hover': {
+                transform: 'scale(1.05)',
+                background: 'var(--gradient-success)',
+                color: 'white',
+                borderColor: 'transparent'
+              }
+            }}
           >
             Download .txt
           </Button>
@@ -69,14 +109,21 @@ const JournalPreview: React.FC<JournalPreviewProps> = ({ journalData }) => {
           backgroundColor: 'background.default',
           border: '1px solid',
           borderColor: 'divider',
-          borderRadius: 1,
-          p: 2,
+          borderRadius: 2,
+          p: 3,
           fontFamily: 'monospace',
           fontSize: '0.875rem',
           lineHeight: 1.6,
           whiteSpace: 'pre-wrap',
           maxHeight: '400px',
           overflow: 'auto',
+          position: 'relative',
+          boxShadow: 'var(--shadow-medium)',
+          '&:hover': {
+            boxShadow: 'var(--shadow-large)',
+            transform: 'translateY(-2px)',
+            transition: 'all 0.3s ease'
+          }
         }}
       >
         {journalText}

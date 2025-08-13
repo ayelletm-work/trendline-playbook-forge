@@ -9,6 +9,7 @@ import {
 } from '@mui/material';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
+import { TrendingUp } from 'lucide-react';
 import { ThemeProvider, useTheme } from '../components/ThemeProvider';
 import Checklist from '../components/Checklist';
 import JournalForm from '../components/JournalForm';
@@ -29,19 +30,46 @@ const MainContent: React.FC = () => {
 
   return (
     <>
-      <AppBar position="static" elevation={1}>
+      <AppBar 
+        position="static" 
+        elevation={0}
+        sx={{ 
+          background: 'var(--gradient-primary)',
+          boxShadow: 'var(--shadow-medium)'
+        }}
+      >
         <Toolbar>
-          <Typography variant="h6" component="h1" sx={{ flexGrow: 1 }}>
-            4H MGC & SIL – Trendline Playbook (To-Do + Journal)
-          </Typography>
-          <IconButton color="inherit" onClick={toggleDarkMode}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexGrow: 1 }}>
+            <TrendingUp className="animate-bounce-subtle" size={28} />
+            <Typography variant="h6" component="h1" fontWeight="bold">
+              4H MGC & SIL – Trendline Playbook (To-Do + Journal)
+            </Typography>
+          </Box>
+          <IconButton 
+            color="inherit" 
+            onClick={toggleDarkMode}
+            sx={{
+              transition: 'all 0.3s ease',
+              '&:hover': {
+                transform: 'rotate(180deg) scale(1.1)',
+                background: 'rgba(255,255,255,0.1)'
+              }
+            }}
+          >
             {darkMode ? <Brightness7Icon /> : <Brightness4Icon />}
           </IconButton>
         </Toolbar>
       </AppBar>
 
-      <Container maxWidth="lg" sx={{ py: 4 }}>
-        <Box sx={{ mb: 4 }}>
+      <Container 
+        maxWidth="lg" 
+        sx={{ 
+          py: 4,
+          background: 'radial-gradient(ellipse at top, rgba(59, 130, 246, 0.05) 0%, transparent 70%)',
+          minHeight: 'calc(100vh - 64px)'
+        }}
+      >
+        <Box sx={{ mb: 4 }} className="animate-fade-in">
           <Checklist />
         </Box>
 
