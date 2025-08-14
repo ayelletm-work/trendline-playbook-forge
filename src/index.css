@@ -75,10 +75,26 @@ All colors MUST be HSL.
     --gradient-purple: linear-gradient(135deg, hsl(var(--purple)), hsl(var(--purple-light)));
     --gradient-emerald: linear-gradient(135deg, hsl(var(--emerald)), hsl(var(--emerald-light)));
     
+    /* Background Effects */
+    --bg-glass: rgba(255, 255, 255, 0.1);
+    --bg-glass-hover: rgba(255, 255, 255, 0.15);
+    --bg-blur: blur(12px);
+    --bg-gradient-radial: radial-gradient(ellipse at top, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
+    --bg-gradient-conic: conic-gradient(from 180deg at 50% 50%, hsl(var(--primary)) 0deg, hsl(var(--accent)) 60deg, hsl(var(--success)) 120deg, hsl(var(--warning)) 180deg, hsl(var(--purple)) 240deg, hsl(var(--primary)) 360deg);
+    
+    /* Advanced Shadows */
     --shadow-soft: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     --shadow-medium: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
     --shadow-large: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
     --shadow-colored: 0 10px 30px -10px hsl(var(--primary) / 0.3);
+    
+    /* Menu & Component Shadows */
+    --shadow-menu: 0 4px 12px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.05);
+    --shadow-dialog: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 8px 16px -4px rgba(0, 0, 0, 0.1);
+    --shadow-nav-panel: 0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 10px -2px rgba(0, 0, 0, 0.05);
+    --shadow-toggle-active: inset 0 2px 4px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow-toggle-disable: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow-floating: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
 
     --radius: 0.5rem;
 
@@ -159,10 +175,26 @@ All colors MUST be HSL.
     --gradient-purple: linear-gradient(135deg, hsl(var(--purple)), hsl(var(--purple-light)));
     --gradient-emerald: linear-gradient(135deg, hsl(var(--emerald)), hsl(var(--emerald-light)));
 
+    /* Dark Mode Background Effects */
+    --bg-glass: rgba(255, 255, 255, 0.05);
+    --bg-glass-hover: rgba(255, 255, 255, 0.1);
+    --bg-blur: blur(16px);
+    --bg-gradient-radial: radial-gradient(ellipse at top, rgba(59, 130, 246, 0.15) 0%, transparent 70%);
+    --bg-gradient-conic: conic-gradient(from 180deg at 50% 50%, hsl(var(--primary)) 0deg, hsl(var(--accent)) 60deg, hsl(var(--success)) 120deg, hsl(var(--warning)) 180deg, hsl(var(--purple)) 240deg, hsl(var(--primary)) 360deg);
+
+    /* Dark Mode Advanced Shadows */
     --shadow-soft: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
     --shadow-medium: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
     --shadow-large: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
     --shadow-colored: 0 10px 30px -10px hsl(var(--primary) / 0.4);
+    
+    /* Dark Mode Menu & Component Shadows */
+    --shadow-menu: 0 4px 12px rgba(0, 0, 0, 0.2), 0 2px 4px rgba(0, 0, 0, 0.15);
+    --shadow-dialog: 0 25px 50px -12px rgba(0, 0, 0, 0.4), 0 8px 16px -4px rgba(0, 0, 0, 0.2);
+    --shadow-nav-panel: 0 10px 25px -3px rgba(0, 0, 0, 0.2), 0 4px 10px -2px rgba(0, 0, 0, 0.15);
+    --shadow-toggle-active: inset 0 2px 4px rgba(0, 0, 0, 0.2), 0 1px 2px rgba(0, 0, 0, 0.1);
+    --shadow-toggle-disable: 0 1px 2px rgba(0, 0, 0, 0.1);
+    --shadow-floating: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 8px 10px -6px rgba(0, 0, 0, 0.15);
 
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
@@ -182,5 +214,49 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  /* Glass Effects */
+  .glass-effect {
+    background: var(--bg-glass);
+    backdrop-filter: var(--bg-blur);
+    -webkit-backdrop-filter: var(--bg-blur);
+  }
+  
+  .glass-hover:hover {
+    background: var(--bg-glass-hover);
+  }
+  
+  /* Advanced Shadows */
+  .shadow-menu { box-shadow: var(--shadow-menu); }
+  .shadow-dialog { box-shadow: var(--shadow-dialog); }
+  .shadow-nav-panel { box-shadow: var(--shadow-nav-panel); }
+  .shadow-toggle-active { box-shadow: var(--shadow-toggle-active); }
+  .shadow-toggle-disable { box-shadow: var(--shadow-toggle-disable); }
+  .shadow-floating { box-shadow: var(--shadow-floating); }
+  
+  /* Background Gradients */
+  .bg-gradient-radial { background: var(--bg-gradient-radial); }
+  .bg-gradient-conic { background: var(--bg-gradient-conic); }
+  
+  /* Enhanced Rounded Corners */
+  .rounded-2 { border-radius: 2px; }
+  .rounded-4 { border-radius: 4px; }
+  .rounded-8 { border-radius: 8px; }
+  .rounded-16 { border-radius: 16px; }
+  .rounded-20 { border-radius: 20px; }
+  
+  /* Interactive Effects */
+  .hover-float:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-floating);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .hover-glow:hover {
+    box-shadow: var(--shadow-colored);
+    transition: all 0.3s ease;
   }
 }

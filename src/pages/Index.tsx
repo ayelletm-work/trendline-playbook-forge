@@ -53,7 +53,7 @@ const MainContent: React.FC = () => {
         maxWidth="xl" 
         sx={{ 
           py: 4,
-          background: 'radial-gradient(ellipse at top, rgba(59, 130, 246, 0.05) 0%, transparent 70%)',
+          background: 'var(--bg-gradient-radial)',
           minHeight: 'calc(100vh - 64px)',
           height: 'auto'
         }}

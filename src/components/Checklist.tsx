@@ -206,10 +206,10 @@ const Checklist = () => {
         onClick={handleClick}
       >
         {sections.map((section, sectionIndex) => (
-          <Card key={sectionIndex} className="bg-gradient-to-r from-primary/5 to-secondary/5 border-primary/20">
+          <Card key={sectionIndex} className="glass-effect hover-float hover-glow bg-gradient-to-r from-primary/5 to-secondary/5 border-primary/20 rounded-16 transition-all duration-300">
             <CardHeader className="pb-4">
               <CardTitle className="flex items-center gap-2">
-                <Badge variant="outline" className="bg-primary/10 text-primary border-primary/30">
+                <Badge variant="outline" className="bg-primary/10 text-primary border-primary/30 rounded-8 shadow-menu">
                   {section.badge}
                 </Badge>
                 <span className="text-primary">{section.title}</span>
@@ -229,12 +229,12 @@ const Checklist = () => {
                         key={task.id} 
                         className={`flex items-start gap-3 ${task.indent ? 'ml-6' : ''}`}
                       >
-                        <Checkbox
-                          id={task.id}
-                          checked={checkedItems[task.id] || false}
-                          onCheckedChange={() => handleCheck(task.id)}
-                          className="mt-0.5"
-                        />
+                      <Checkbox
+                        id={task.id}
+                        checked={checkedItems[task.id] || false}
+                        onCheckedChange={() => handleCheck(task.id)}
+                        className="mt-0.5 rounded-4 shadow-toggle-active data-[state=checked]:shadow-toggle-active data-[state=unchecked]:shadow-toggle-disable"
+                      />
                         <label 
                           htmlFor={task.id}
                           className={`text-sm leading-relaxed cursor-pointer ${
@@ -257,11 +257,11 @@ const Checklist = () => {
 
       {/* Start My Day Button */}
       {showStartButton && (
-        <div className="fixed bottom-6 right-6 md:bottom-8 md:right-8 z-50 animate-fade-in">
+        <div className="fixed bottom-6 right-6 md:bottom-8 md:right-8 z-50 animate-scale-in">
           <Button
             onClick={handleStartMyDay}
             size="lg"
-            className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 rounded-full px-8 py-6 text-lg font-semibold group"
+            className="bg-gradient-primary hover:bg-gradient-accent text-primary-foreground shadow-floating hover:shadow-dialog transition-all duration-300 transform hover:scale-105 rounded-20 px-8 py-6 text-lg font-semibold group glass-effect hover-glow"
           >
             Start My Day
             <ChevronRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
@@ -271,11 +271,11 @@ const Checklist = () => {
 
       {/* Mobile version - bottom center */}
       {showStartButton && (
-        <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50 animate-fade-in md:hidden">
+        <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50 animate-scale-in md:hidden">
           <Button
             onClick={handleStartMyDay}
             size="lg"
-            className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 rounded-full px-8 py-4 text-lg font-semibold group"
+            className="bg-gradient-primary hover:bg-gradient-accent text-primary-foreground shadow-floating hover:shadow-dialog transition-all duration-300 transform hover:scale-105 rounded-20 px-8 py-4 text-lg font-semibold group glass-effect hover-glow"
           >
             Start My Day
             <ChevronRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />

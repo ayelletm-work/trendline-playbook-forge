@@ -100,9 +100,20 @@ export default {
 				'soft': 'var(--shadow-soft)',
 				'medium': 'var(--shadow-medium)',
 				'large': 'var(--shadow-large)',
-				'colored': 'var(--shadow-colored)'
+				'colored': 'var(--shadow-colored)',
+				'menu': 'var(--shadow-menu)',
+				'dialog': 'var(--shadow-dialog)',
+				'nav-panel': 'var(--shadow-nav-panel)',
+				'toggle-active': 'var(--shadow-toggle-active)',
+				'toggle-disable': 'var(--shadow-toggle-disable)',
+				'floating': 'var(--shadow-floating)'
 			},
 			borderRadius: {
+				'2': '2px',
+				'4': '4px', 
+				'8': '8px',
+				'16': '16px',
+				'20': '20px',
 				lg: 'var(--radius)',
 				md: 'calc(var(--radius) - 2px)',
 				sm: 'calc(var(--radius) - 4px)'
