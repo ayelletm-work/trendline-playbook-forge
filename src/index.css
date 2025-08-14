@@ -234,9 +234,9 @@ All colors MUST be HSL.
   .text-xs { @apply font-open-sans text-t-2; }
   
   /* Titillium body text variants */
-  .text-tit { @apply font-titillium text-tit-base; }
-  .text-tit-sm { @apply font-titillium text-tit-sm; }
-  .text-tit-lg { @apply font-titillium text-tit-lg; }
+  .text-tit { @apply font-titillium; font-size: 1rem; line-height: 1.5rem; font-weight: 400; }
+  .text-tit-sm { @apply font-titillium; font-size: 0.875rem; line-height: 1.25rem; font-weight: 400; }
+  .text-tit-lg { @apply font-titillium; font-size: 1.125rem; line-height: 1.75rem; font-weight: 600; }
 }
 
 @layer utilities {
