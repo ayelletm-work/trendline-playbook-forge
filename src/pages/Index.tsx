@@ -87,12 +87,19 @@ const MainContent: React.FC = () => {
               }
             }}
           >
+            <Tab label="Check list" />
             <Tab label="Trading Journal" />
             <Tab label="Playbook Analyzer" />
           </Tabs>
         </Box>
 
         {currentTab === 0 && (
+          <Box className="animate-fade-in">
+            <Checklist />
+          </Box>
+        )}
+
+        {currentTab === 1 && (
           <>
             <TradingRules />
             <Box sx={{ 
@@ -114,7 +121,7 @@ const MainContent: React.FC = () => {
           </>
         )}
 
-        {currentTab === 1 && (
+        {currentTab === 2 && (
           <Box className="animate-fade-in">
             <Analyzer />
           </Box>
