@@ -59,32 +59,73 @@ const RichSummaryPanel: React.FC<RichSummaryPanelProps> = ({
   const generateSummaryText = (): string => {
     const status = calculations.isOpen ? 'OPEN' : 'CLOSED';
     const pnlText = calculations.isOpen ? 'Projected P&L' : 'Realized P&L';
+    const currentDate = new Date().toLocaleDateString('en-US', { 
+      month: 'short', 
+      day: 'numeric', 
+      year: 'numeric' 
+    });
+    
+    // Calculate R:R ratio for display
+    const plannedRR = calculations.plannedRMultiple ? `${calculations.plannedRMultiple.toFixed(1)}:1` : 'N/A';
+    const realizedRR = calculations.realizedRMultiple ? `${calculations.realizedRMultiple.toFixed(1)}:1` : 'N/A';
+    
+    // Risk calculation
+    const riskAmount = calculations.tradeRiskDollar || 0;
+    const rewardAmount = calculations.netPnl || 0;
     
     return `📓 TRADE SUMMARY
-    
-🎯 ${side} ${contracts} contracts ${instrument}
-Status: ${status}
-${sessionTags.length > 0 ? `Sessions: ${sessionTags.join(', ')}` : ''}
 
-💰 ${pnlText}: ${formatCurrency(calculations.netPnl)}
+📅 Date: ${currentDate}
+🕒 Session: ${sessionTags.length > 0 ? sessionTags.join(' → ') : 'Not specified'}
+Setup Type: ${side} Position ${calculations.isOpen ? '(OPEN)' : '(CLOSED)'}
+📍 Price action analysis and entry rationale
+📍 Entry planned at ${formatPrice(entry)}
+📍 Target levels: ${profitTarget ? formatPrice(profitTarget) : 'Not set'}
+📍 Stop Loss: ${stopLoss ? formatPrice(stopLoss) : 'Not set'}
+
+📈 Trade Details
+
+Side: ${side}
+Entry: ${formatPrice(entry)}
+${exit ? `Exit: ${formatPrice(exit)}` : ''}
+Stop Loss: ${stopLoss ? formatPrice(stopLoss) : 'Not set'}
+Take Profit: ${profitTarget ? formatPrice(profitTarget) : 'Not set'}
+Contracts: ${contracts}
+Risk: ${riskAmount > 0 ? formatCurrency(riskAmount) : 'Not calculated'}
+${rewardAmount !== 0 ? `${pnlText}: ${formatCurrency(rewardAmount)}` : ''}
+${calculations.plannedRMultiple ? `Planned R:R: ${plannedRR}` : ''}
+${calculations.realizedRMultiple ? `Realized R:R: ${realizedRR}` : ''}
+
+💰 Financial Summary
 📊 Total Ticks: ${formatTicks(calculations.totalTicks)}
 💸 Gross P&L: ${formatCurrency(calculations.grossPnl)}
 🏷️ Fees: ${formatCurrency(calculations.feesTotal)}
+💵 Net P&L: ${formatCurrency(calculations.netPnl)}
+${calculations.roiPercent !== null && calculations.roiPercent !== undefined ? `📈 ROI: ${calculations.roiPercent.toFixed(2)}%` : ''}
 
-📈 Entry: ${formatPrice(entry)}
-${exit ? `🏁 Exit: ${formatPrice(exit)}` : ''}
-${stopLoss ? `🛡️ Stop Loss: ${formatPrice(stopLoss)}` : ''}
-${profitTarget ? `🎯 Target: ${formatPrice(profitTarget)}` : ''}
+${calculations.mfeDollar !== null && calculations.mfeDollar !== undefined ? `📈 MFE: ${formatCurrency(calculations.mfeDollar)}` : ''}
+${calculations.maeDollar !== null && calculations.maeDollar !== undefined ? `📉 MAE: ${formatCurrency(calculations.maeDollar)}` : ''}
 
-${calculations.plannedRMultiple !== null && calculations.plannedRMultiple !== undefined ? `📐 Planned R: ${calculations.plannedRMultiple.toFixed(2)}` : ''}
-${calculations.realizedRMultiple !== null && calculations.realizedRMultiple !== undefined ? `⭐ Realized R: ${calculations.realizedRMultiple.toFixed(2)}` : ''}
-${calculations.roiPercent !== null && calculations.roiPercent !== undefined ? `📊 ROI: ${calculations.roiPercent.toFixed(2)}%` : ''}
+🎯 Execution Summary
+✅ Position setup according to plan
+${exit ? '✅ Trade executed and closed' : '⏳ Trade currently open'}
+${stopLoss ? '✅ Risk management in place' : '❌ No stop loss defined'}
+${profitTarget ? '✅ Profit target defined' : '❌ No profit target set'}
+${calculations.plannedRMultiple && calculations.plannedRMultiple >= 2 ? '✅ Favorable risk-reward ratio' : '⚠️ Consider improving risk-reward ratio'}
 
-${calculations.mfeDollar ? `📈 MFE: ${formatCurrency(calculations.mfeDollar)}` : ''}
-${calculations.maeDollar ? `📉 MAE: ${formatCurrency(calculations.maeDollar)}` : ''}
+⏱️ Timing
+${startTime ? `Start: ${startTime}` : ''}
+${endTime ? `End: ${endTime}` : ''}
+Duration: ${calculateDuration()}
 
-⏱️ Duration: ${calculateDuration()}
-⭐ Rating: ${tradeRating}/5 stars`;
+⭐ Trade Rating: ${tradeRating}/5 stars
+
+🧠 Analysis Tags
+${side}Position
+${calculations.isOpen ? 'OpenTrade' : 'ClosedTrade'}
+${calculations.netPnl > 0 ? 'ProfitableTrade' : calculations.netPnl < 0 ? 'LossTrade' : 'BreakevenTrade'}
+${calculations.plannedRMultiple && calculations.plannedRMultiple >= 2 ? 'HighRR' : 'LowRR'}
+${stopLoss ? 'RiskManaged' : 'NoStopLoss'}`;
   };
 
   const handleCopy = async () => {
