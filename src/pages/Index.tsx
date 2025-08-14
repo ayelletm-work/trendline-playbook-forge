@@ -98,7 +98,8 @@ const MainContent: React.FC = () => {
             <Box sx={{ 
               display: 'flex', 
               flexDirection: { xs: 'column', lg: 'row' }, 
-              gap: 4 
+              gap: 4,
+              alignItems: 'stretch'
             }}>
               <Box sx={{ flex: 1 }}>
                 <JournalForm
