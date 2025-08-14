@@ -27,7 +27,8 @@ import {
   DollarSign,
   Calculator,
   Save,
-  Star
+  Star,
+  LogOut
 } from 'lucide-react';
 import { JournalData, defaultJournalData } from '../utils/journalGenerator';
 import { saveToLocalStorage, loadFromLocalStorage } from '../utils/localStorage';
@@ -706,6 +707,86 @@ const JournalForm: React.FC<JournalFormProps> = ({ onDataChange, onReset }) => {
               }
             }}
           />
+        </Box>
+      </Box>
+
+      {/* Exit Section */}
+      <Box sx={{ mb: 3 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
+          <LogOut className="animate-pulse-slow" size={20} />
+          <Typography variant="subtitle1" fontWeight="medium">
+            🚪 Exit Details (Optional)
+          </Typography>
+        </Box>
+        
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
+          <Box sx={{ flex: '1 1 200px', minWidth: 200, position: 'relative' }}>
+            <LogOut size={20} style={{ position: 'absolute', left: 12, top: 12, zIndex: 1, color: '#6b7280' }} />
+            <TextField
+              fullWidth
+              label="Exit Price"
+              value={formData.exit || ''}
+              onChange={(e) => handleInputChange('exit', e.target.value)}
+              size="small"
+              placeholder="Enter exit price..."
+              sx={{ 
+                '& .MuiOutlinedInput-root': { 
+                  paddingLeft: '40px',
+                  transition: 'all 0.3s ease',
+                  '&:hover': { boxShadow: 'var(--shadow-soft)' }
+                } 
+              }}
+            />
+          </Box>
+          
+          <Box sx={{ flex: '1 1 300px', minWidth: 300 }}>
+            <FormControl fullWidth size="small">
+              <InputLabel>Exit Reason</InputLabel>
+              <Select
+                value={formData.exitReason || ''}
+                label="Exit Reason"
+                onChange={(e) => handleInputChange('exitReason', e.target.value)}
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    transition: 'all 0.3s ease',
+                    '&:hover': { boxShadow: 'var(--shadow-soft)' }
+                  }
+                }}
+              >
+                <MenuItem value="" disabled>
+                  <Typography variant="body2" color="text.secondary">Select exit reason</Typography>
+                </MenuItem>
+                
+                {/* Technical Reasons */}
+                <MenuItem disabled>
+                  <Typography variant="body2" fontWeight="bold" color="primary">📊 Technical Reasons</Typography>
+                </MenuItem>
+                <MenuItem value="Hit Take Profit 1">🎯 Hit Take Profit 1</MenuItem>
+                <MenuItem value="Hit Take Profit 2">🎯 Hit Take Profit 2</MenuItem>
+                <MenuItem value="Hit Stop Loss">🛑 Hit Stop Loss</MenuItem>
+                <MenuItem value="Breakeven Exit">⚖️ Breakeven Exit</MenuItem>
+                <MenuItem value="Support/Resistance Level">📏 Support/Resistance Level</MenuItem>
+                <MenuItem value="Trendline Break">📈 Trendline Break</MenuItem>
+                <MenuItem value="Volume Divergence">📊 Volume Divergence</MenuItem>
+                <MenuItem value="Time-based Exit">⏰ Time-based Exit</MenuItem>
+                <MenuItem value="Pattern Completion">🔄 Pattern Completion</MenuItem>
+                
+                {/* Emotional Reasons */}
+                <MenuItem disabled>
+                  <Typography variant="body2" fontWeight="bold" color="warning.main">🧠 Emotional Reasons</Typography>
+                </MenuItem>
+                <MenuItem value="Fear of Loss">😰 Fear of Loss</MenuItem>
+                <MenuItem value="Greed - Too Early">🤑 Greed - Exited Too Early</MenuItem>
+                <MenuItem value="Greed - Held Too Long">🤑 Greed - Held Too Long</MenuItem>
+                <MenuItem value="FOMO Exit">😱 FOMO Exit</MenuItem>
+                <MenuItem value="Panic Selling">😨 Panic Selling</MenuItem>
+                <MenuItem value="Overconfidence">😎 Overconfidence</MenuItem>
+                <MenuItem value="Impatience">⏱️ Impatience</MenuItem>
+                <MenuItem value="External Pressure">🗣️ External Pressure</MenuItem>
+                <MenuItem value="News Reaction">📰 News Reaction</MenuItem>
+              </Select>
+            </FormControl>
+          </Box>
         </Box>
       </Box>
 

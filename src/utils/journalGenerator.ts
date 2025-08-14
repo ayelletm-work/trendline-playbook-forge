@@ -13,6 +13,8 @@ export interface JournalData {
   stopLoss: string;
   takeProfit1: string;
   takeProfit2: string;
+  exit?: string;
+  exitReason?: string;
   contracts: string;
   accountBalance: string;
   risk: string;
@@ -27,6 +29,8 @@ export const generateJournalText = (data: JournalData): string => {
   const positivePoints = data.positives.filter(positive => positive.trim()).map(positive => `✅ ${positive}`).join('\n');
   const negativePoints = data.negatives.filter(negative => negative.trim()).map(negative => `❌ ${negative}`).join('\n');
   const tagsList = data.tags.map(tag => tag).join('\n');
+  
+  const exitSection = data.exit ? `\nExit: ${data.exit}${data.exitReason ? `\nExit Reason: ${data.exitReason}` : ''}` : '';
 
   return `📅 Date: ${data.date}
 🕒 Session: ${data.session}
@@ -45,7 +49,7 @@ Entry: ${data.entry}
 
 Stop Loss: ${data.stopLoss}
 
-Take Profit: TP1 – ${data.takeProfit1}, TP2 – ${data.takeProfit2}
+Take Profit: TP1 – ${data.takeProfit1}, TP2 – ${data.takeProfit2}${exitSection}
 
 Contracts: ${data.contracts}
 
@@ -81,6 +85,8 @@ export const defaultJournalData: JournalData = {
   stopLoss: '1.2700',
   takeProfit1: '1.2850',
   takeProfit2: '1.2950',
+  exit: '',
+  exitReason: '',
   contracts: '0.5 lots',
   accountBalance: '5000',
   risk: '$100.00',
