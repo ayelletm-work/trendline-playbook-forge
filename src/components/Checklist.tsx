@@ -205,7 +205,14 @@ const Checklist = () => {
         className="space-y-6 animate-fade-in pb-20"
         onClick={handleClick}
       >
-        {sections.map((section, sectionIndex) => (
+        {sections.map((section, sectionIndex) => {
+          // Calculate progress for this section
+          const totalItems = section.items.reduce((acc, item) => acc + item.tasks.length, 0);
+          const checkedItemsInSection = section.items.reduce((acc, item) => {
+            return acc + item.tasks.filter(task => checkedItems[task.id]).length;
+          }, 0);
+
+          return (
           <Card key={sectionIndex} className="bg-card/80 border-border/30 hover:border-border/50 transition-all duration-300 hover:shadow-medium backdrop-blur-sm">
             <CardHeader className="pb-4 px-8 pt-6">
               <CardTitle className="flex items-center justify-between w-full">
@@ -219,7 +226,7 @@ const Checklist = () => {
                     </svg>
                   </div>
                   <span className="font-open-sans text-t0 text-muted-foreground">
-                    {Math.round(Math.random() * 10) + 1} of {section.items.reduce((acc, item) => acc + item.tasks.length, 0)}
+                    {checkedItemsInSection} of {totalItems}
                   </span>
                 </div>
               </CardTitle>
@@ -261,7 +268,8 @@ const Checklist = () => {
               ))}
             </CardContent>
           </Card>
-        ))}
+          );
+        })}
       </div>
 
       {/* Start My Day Button */}
