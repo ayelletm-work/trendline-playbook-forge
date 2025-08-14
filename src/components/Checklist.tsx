@@ -202,7 +202,7 @@ const Checklist = () => {
     <div className="relative">
       <div 
         ref={checklistRef}
-        className="space-y-6 animate-fade-in pb-20"
+        className="grid grid-cols-1 lg:grid-cols-2 gap-6 animate-fade-in pb-20"
         onClick={handleClick}
       >
         {sections.map((section, sectionIndex) => {
@@ -213,7 +213,7 @@ const Checklist = () => {
           }, 0);
 
           return (
-          <Card key={sectionIndex} className="transition-all duration-300 hover:shadow-[0_0_12px_0_rgba(214,227,251,0.4)]">
+          <Card key={sectionIndex} className="transition-all duration-300 hover:shadow-[0_0_12px_0_rgba(214,227,251,0.4)] h-fit">
             <CardHeader className="pb-4 px-8 pt-6">
               <CardTitle className="flex items-center justify-between w-full">
                 <span className="text-foreground font-titillium text-tit-xl font-semibold tracking-wide">
