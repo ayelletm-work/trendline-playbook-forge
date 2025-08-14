@@ -213,7 +213,7 @@ const Checklist = () => {
           }, 0);
 
           return (
-          <Card key={sectionIndex} className="bg-card/80 border-border/30 hover:border-border/50 transition-all duration-300 hover:shadow-medium backdrop-blur-sm">
+          <Card key={sectionIndex} className="transition-all duration-300 hover:shadow-[0_0_12px_0_rgba(214,227,251,0.4)]">
             <CardHeader className="pb-4 px-8 pt-6">
               <CardTitle className="flex items-center justify-between w-full">
                 <span className="text-foreground font-titillium text-tit-xl font-semibold tracking-wide">
