@@ -1,16 +1,56 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Checkbox } from './ui/checkbox';
 import { Badge } from './ui/badge';
+import { Button } from './ui/button';
+import { ChevronRight } from 'lucide-react';
 
 const Checklist = () => {
   const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>({});
+  const [showStartButton, setShowStartButton] = useState(false);
+  const [hasInteracted, setHasInteracted] = useState(false);
+  const checklistRef = useRef<HTMLDivElement>(null);
 
   const handleCheck = (id: string) => {
     setCheckedItems(prev => ({
       ...prev,
       [id]: !prev[id]
     }));
+    
+    if (!hasInteracted) {
+      setHasInteracted(true);
+      setShowStartButton(true);
+    }
+  };
+
+  const handleScroll = () => {
+    if (!hasInteracted) {
+      setHasInteracted(true);
+      setShowStartButton(true);
+    }
+  };
+
+  const handleStartMyDay = () => {
+    // This could navigate to the journal or next step
+    console.log('Starting my day!');
+    // For now, we'll just hide the button as feedback
+    setShowStartButton(false);
+  };
+
+  useEffect(() => {
+    const element = checklistRef.current;
+    if (element) {
+      element.addEventListener('scroll', handleScroll);
+      return () => element.removeEventListener('scroll', handleScroll);
+    }
+  }, []);
+
+  // Also track any click interaction
+  const handleClick = () => {
+    if (!hasInteracted) {
+      setHasInteracted(true);
+      setShowStartButton(true);
+    }
   };
 
   const sections = [
@@ -104,7 +144,7 @@ const Checklist = () => {
           tasks: [
             { id: "sl1", text: "SL placed beyond the structure (not just under/above candle wick)" },
             { id: "sl2", text: "Ensure wiggle room – avoid getting wicked out on normal volatility" },
-            { id: "sl3", text: "Risk 1–2% max per trade (align with Apex or personal drawdown limits)" }
+            { id: "sl3", text: "Risk 1–2% max per trade (align with personal drawdown limits)" }
           ]
         }
       ]
@@ -124,16 +164,16 @@ const Checklist = () => {
       ]
     },
     {
-      title: "APEX 50K RULES (if funded)",
+      title: "RISK MANAGEMENT RULES",
       badge: "✅ 7.",
       items: [
         {
           category: "",
           tasks: [
-            { id: "apex1", text: "Max daily loss: $750" },
-            { id: "apex2", text: "Max overall drawdown: $2,600" },
-            { id: "apex3", text: "Maintain 30% profit consistency rule" },
-            { id: "apex4", text: "No overtrading → 1–2 A+ setups per day are enough" }
+            { id: "risk1", text: "Max daily loss: 2% of account" },
+            { id: "risk2", text: "Max overall drawdown: 5% of account" },
+            { id: "risk3", text: "Maintain consistent profit targets" },
+            { id: "risk4", text: "No overtrading → 1–2 A+ setups per day are enough" }
           ]
         }
       ]
@@ -159,55 +199,89 @@ const Checklist = () => {
   ];
 
   return (
-    <div className="space-y-6 animate-fade-in">
-      {sections.map((section, sectionIndex) => (
-        <Card key={sectionIndex} className="bg-gradient-to-r from-primary/5 to-secondary/5 border-primary/20">
-          <CardHeader className="pb-4">
-            <CardTitle className="flex items-center gap-2">
-              <Badge variant="outline" className="bg-primary/10 text-primary border-primary/30">
-                {section.badge}
-              </Badge>
-              <span className="text-primary">{section.title}</span>
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            {section.items.map((category, categoryIndex) => (
-              <div key={categoryIndex} className="mb-4 last:mb-0">
-                {category.category && (
-                  <h4 className="font-medium text-foreground/90 mb-3">
-                    {category.category}
-                  </h4>
-                )}
-                <div className="space-y-2">
-                  {category.tasks.map((task) => (
-                    <div 
-                      key={task.id} 
-                      className={`flex items-start gap-3 ${task.indent ? 'ml-6' : ''}`}
-                    >
-                      <Checkbox
-                        id={task.id}
-                        checked={checkedItems[task.id] || false}
-                        onCheckedChange={() => handleCheck(task.id)}
-                        className="mt-0.5"
-                      />
-                      <label 
-                        htmlFor={task.id}
-                        className={`text-sm leading-relaxed cursor-pointer ${
-                          checkedItems[task.id] 
-                            ? 'line-through text-muted-foreground' 
-                            : 'text-foreground/90'
-                        }`}
+    <div className="relative">
+      <div 
+        ref={checklistRef}
+        className="space-y-6 animate-fade-in pb-20"
+        onClick={handleClick}
+      >
+        {sections.map((section, sectionIndex) => (
+          <Card key={sectionIndex} className="bg-gradient-to-r from-primary/5 to-secondary/5 border-primary/20">
+            <CardHeader className="pb-4">
+              <CardTitle className="flex items-center gap-2">
+                <Badge variant="outline" className="bg-primary/10 text-primary border-primary/30">
+                  {section.badge}
+                </Badge>
+                <span className="text-primary">{section.title}</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              {section.items.map((category, categoryIndex) => (
+                <div key={categoryIndex} className="mb-4 last:mb-0">
+                  {category.category && (
+                    <h4 className="font-medium text-foreground/90 mb-3">
+                      {category.category}
+                    </h4>
+                  )}
+                  <div className="space-y-2">
+                    {category.tasks.map((task) => (
+                      <div 
+                        key={task.id} 
+                        className={`flex items-start gap-3 ${task.indent ? 'ml-6' : ''}`}
                       >
-                        {task.text}
-                      </label>
-                    </div>
-                  ))}
+                        <Checkbox
+                          id={task.id}
+                          checked={checkedItems[task.id] || false}
+                          onCheckedChange={() => handleCheck(task.id)}
+                          className="mt-0.5"
+                        />
+                        <label 
+                          htmlFor={task.id}
+                          className={`text-sm leading-relaxed cursor-pointer ${
+                            checkedItems[task.id] 
+                              ? 'line-through text-muted-foreground' 
+                              : 'text-foreground/90'
+                          }`}
+                        >
+                          {task.text}
+                        </label>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            ))}
-          </CardContent>
-        </Card>
-      ))}
+              ))}
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      {/* Start My Day Button */}
+      {showStartButton && (
+        <div className="fixed bottom-6 right-6 md:bottom-8 md:right-8 z-50 animate-fade-in">
+          <Button
+            onClick={handleStartMyDay}
+            size="lg"
+            className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 rounded-full px-8 py-6 text-lg font-semibold group"
+          >
+            Start My Day
+            <ChevronRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+          </Button>
+        </div>
+      )}
+
+      {/* Mobile version - bottom center */}
+      {showStartButton && (
+        <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50 animate-fade-in md:hidden">
+          <Button
+            onClick={handleStartMyDay}
+            size="lg"
+            className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 rounded-full px-8 py-4 text-lg font-semibold group"
+          >
+            Start My Day
+            <ChevronRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+          </Button>
+        </div>
+      )}
     </div>
   );
 };

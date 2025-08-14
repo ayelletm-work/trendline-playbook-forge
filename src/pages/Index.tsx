@@ -6,32 +6,15 @@ import {
   Toolbar,
   IconButton,
   Box,
-  Tabs,
-  Tab,
 } from '@mui/material';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { TrendingUp } from 'lucide-react';
 import { ThemeProvider, useTheme } from '../components/ThemeProvider';
 import Checklist from '../components/Checklist';
-import JournalForm from '../components/JournalForm';
-import JournalPreview from '../components/JournalPreview';
-import TradingRules from '../components/TradingRules';
-import Analyzer from '../components/Analyzer';
-import { JournalData, defaultJournalData } from '../utils/journalGenerator';
 
 const MainContent: React.FC = () => {
   const { darkMode, toggleDarkMode } = useTheme();
-  const [journalData, setJournalData] = useState<JournalData>(defaultJournalData);
-  const [currentTab, setCurrentTab] = useState(0);
-
-  const handleJournalDataChange = (data: JournalData) => {
-    setJournalData(data);
-  };
-
-  const handleJournalReset = () => {
-    setJournalData(defaultJournalData);
-  };
 
   return (
     <>
@@ -75,58 +58,9 @@ const MainContent: React.FC = () => {
           height: 'auto'
         }}
       >
-        <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 4 }}>
-          <Tabs 
-            value={currentTab} 
-            onChange={(_, newValue) => setCurrentTab(newValue)}
-            sx={{
-              '& .MuiTab-root': {
-                transition: 'all 0.3s ease',
-                '&:hover': {
-                  transform: 'translateY(-2px)'
-                }
-              }
-            }}
-          >
-            <Tab label="Check list" />
-            <Tab label="Trading Journal" />
-            <Tab label="Playbook Analyzer" />
-          </Tabs>
+        <Box className="animate-fade-in">
+          <Checklist />
         </Box>
-
-        {currentTab === 0 && (
-          <Box className="animate-fade-in">
-            <Checklist />
-          </Box>
-        )}
-
-        {currentTab === 1 && (
-          <>
-            <TradingRules />
-            <Box sx={{ 
-              display: 'flex', 
-              flexDirection: { xs: 'column', lg: 'row' }, 
-              gap: 4,
-              alignItems: 'stretch'
-            }}>
-              <Box sx={{ flex: 1 }}>
-                <JournalForm
-                  onDataChange={handleJournalDataChange}
-                  onReset={handleJournalReset}
-                />
-              </Box>
-              <Box sx={{ flex: 1 }}>
-                <JournalPreview journalData={journalData} />
-              </Box>
-            </Box>
-          </>
-        )}
-
-        {currentTab === 2 && (
-          <Box className="animate-fade-in">
-            <Analyzer />
-          </Box>
-        )}
       </Container>
     </>
   );
