@@ -209,17 +209,17 @@ const Checklist = () => {
           <Card key={sectionIndex} className="glass-effect hover-float hover-glow bg-gradient-to-r from-primary/5 to-secondary/5 border-primary/20 rounded-16 transition-all duration-300">
             <CardHeader className="pb-4">
               <CardTitle className="flex items-center gap-2">
-                <Badge variant="outline" className="bg-primary/10 text-primary border-primary/30 rounded-8 shadow-menu">
+                <Badge variant="outline" className="bg-primary/10 text-primary border-primary/30 rounded-8 shadow-menu font-open-sans text-t-1">
                   {section.badge}
                 </Badge>
-                <span className="text-primary">{section.title}</span>
+                <span className="text-primary font-titillium text-tit-lg font-semibold">{section.title}</span>
               </CardTitle>
             </CardHeader>
             <CardContent>
               {section.items.map((category, categoryIndex) => (
                 <div key={categoryIndex} className="mb-4 last:mb-0">
                   {category.category && (
-                    <h4 className="font-medium text-foreground/90 mb-3">
+                    <h4 className="font-open-sans text-t1 font-medium text-foreground/90 mb-3">
                       {category.category}
                     </h4>
                   )}
@@ -235,14 +235,14 @@ const Checklist = () => {
                         onCheckedChange={() => handleCheck(task.id)}
                         className="mt-0.5 rounded-4 shadow-toggle-active data-[state=checked]:shadow-toggle-active data-[state=unchecked]:shadow-toggle-disable"
                       />
-                        <label 
-                          htmlFor={task.id}
-                          className={`text-sm leading-relaxed cursor-pointer ${
-                            checkedItems[task.id] 
-                              ? 'line-through text-muted-foreground' 
-                              : 'text-foreground/90'
-                          }`}
-                        >
+                      <label 
+                        htmlFor={task.id}
+                        className={`font-open-sans text-t0 leading-relaxed cursor-pointer ${
+                          checkedItems[task.id] 
+                            ? 'line-through text-muted-foreground' 
+                            : 'text-foreground/90'
+                        }`}
+                      >
                           {task.text}
                         </label>
                       </div>
@@ -261,7 +261,7 @@ const Checklist = () => {
           <Button
             onClick={handleStartMyDay}
             size="lg"
-            className="bg-gradient-primary hover:bg-gradient-accent text-primary-foreground shadow-floating hover:shadow-dialog transition-all duration-300 transform hover:scale-105 rounded-20 px-8 py-6 text-lg font-semibold group glass-effect hover-glow animate-fade-in"
+            className="bg-gradient-primary hover:bg-gradient-accent text-primary-foreground shadow-floating hover:shadow-dialog transition-all duration-300 transform hover:scale-105 rounded-20 px-8 py-6 font-titillium text-tit-lg font-semibold group glass-effect hover-glow animate-fade-in"
           >
             Start My Day
             <ChevronRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
@@ -275,7 +275,7 @@ const Checklist = () => {
           <Button
             onClick={handleStartMyDay}
             size="lg"
-            className="bg-gradient-primary hover:bg-gradient-accent text-primary-foreground shadow-floating hover:shadow-dialog transition-all duration-300 transform hover:scale-105 rounded-20 px-8 py-4 text-lg font-semibold group glass-effect hover-glow animate-fade-in"
+            className="bg-gradient-primary hover:bg-gradient-accent text-primary-foreground shadow-floating hover:shadow-dialog transition-all duration-300 transform hover:scale-105 rounded-20 px-8 py-4 font-titillium text-tit-lg font-semibold group glass-effect hover-glow animate-fade-in"
           >
             Start My Day
             <ChevronRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />

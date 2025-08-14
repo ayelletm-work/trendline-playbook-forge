@@ -119,7 +119,30 @@ export default {
 				sm: 'calc(var(--radius) - 4px)'
 			},
 			fontFamily: {
+				'open-sans': ['Open Sans', 'sans-serif'],
 				'titillium': ['Titillium Web', 'sans-serif'],
+				'sans': ['Open Sans', 'sans-serif'], // Default sans font
+			},
+			fontSize: {
+				// Typography scale based on your reference
+				't-2': ['0.75rem', { lineHeight: '1rem', fontWeight: '400' }], // 12px
+				't-1': ['0.875rem', { lineHeight: '1.25rem', fontWeight: '400' }], // 14px
+				't0': ['1rem', { lineHeight: '1.5rem', fontWeight: '400' }], // 16px - Base
+				't1': ['1.125rem', { lineHeight: '1.75rem', fontWeight: '400' }], // 18px
+				't2': ['1.25rem', { lineHeight: '1.75rem', fontWeight: '500' }], // 20px
+				't3': ['1.5rem', { lineHeight: '2rem', fontWeight: '600' }], // 24px
+				't4': ['1.875rem', { lineHeight: '2.25rem', fontWeight: '600' }], // 30px
+				't5': ['2.25rem', { lineHeight: '2.5rem', fontWeight: '700' }], // 36px
+				't6': ['3rem', { lineHeight: '1', fontWeight: '700' }], // 48px
+				// Titillium Web sizes
+				'tit-xs': ['0.75rem', { lineHeight: '1rem', fontWeight: '400' }], // 12px
+				'tit-sm': ['0.875rem', { lineHeight: '1.25rem', fontWeight: '400' }], // 14px
+				'tit-base': ['1rem', { lineHeight: '1.5rem', fontWeight: '400' }], // 16px
+				'tit-lg': ['1.125rem', { lineHeight: '1.75rem', fontWeight: '600' }], // 18px
+				'tit-xl': ['1.25rem', { lineHeight: '1.75rem', fontWeight: '600' }], // 20px
+				'tit-2xl': ['1.5rem', { lineHeight: '2rem', fontWeight: '700' }], // 24px
+				'tit-3xl': ['1.875rem', { lineHeight: '2.25rem', fontWeight: '700' }], // 30px
+				'tit-4xl': ['2.25rem', { lineHeight: '2.5rem', fontWeight: '900' }], // 36px
 			},
 			keyframes: {
 				'accordion-down': {

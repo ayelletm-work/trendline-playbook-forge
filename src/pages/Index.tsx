@@ -29,8 +29,8 @@ const MainContent: React.FC = () => {
         <Toolbar>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexGrow: 1 }}>
             <TrendingUp className="animate-bounce-subtle" size={28} />
-            <Typography variant="h6" component="h1" fontWeight="bold">
-              4H MGC & SIL – Trendline Playbook (To-Do + Journal)
+            <Typography variant="h6" component="h1" className="font-titillium text-tit-2xl font-bold">
+              4H MGC & SIL – Trendline Playbook
             </Typography>
           </Box>
           <IconButton 

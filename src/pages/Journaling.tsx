@@ -127,19 +127,19 @@ const Journaling = () => {
         {/* Header */}
         <div className="mb-8">
           <h1 
-            className="text-3xl font-bold text-foreground mb-2 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-4"
+            className="font-titillium text-tit-4xl text-foreground mb-2 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-4"
             tabIndex={-1}
           >
             Daily Journal
           </h1>
-          <p className="text-muted-foreground text-lg">{todayDate}</p>
+          <p className="font-open-sans text-t1 text-muted-foreground">{todayDate}</p>
         </div>
 
         <div className="space-y-8">
           {/* Session Tags */}
           <Card className="glass-effect hover-float rounded-16 shadow-menu">
             <CardHeader>
-              <CardTitle className="text-xl flex items-center gap-2">
+              <CardTitle className="font-open-sans text-t3 flex items-center gap-2">
                 🌍 Session Tags
               </CardTitle>
             </CardHeader>
@@ -149,7 +149,7 @@ const Journaling = () => {
                   <Badge
                     key={session.id}
                     variant={selectedSessions.includes(session.id) ? "default" : "outline"}
-                    className={`cursor-pointer transition-all duration-200 hover:scale-105 rounded-8 px-4 py-2 ${
+                    className={`cursor-pointer transition-all duration-200 hover:scale-105 rounded-8 px-4 py-2 font-open-sans text-t-1 ${
                       selectedSessions.includes(session.id) 
                         ? `${session.color} text-white shadow-colored` 
                         : 'hover:bg-accent'
@@ -166,7 +166,7 @@ const Journaling = () => {
           {/* Setup Type */}
           <Card className="glass-effect hover-float rounded-16 shadow-menu">
             <CardHeader>
-              <CardTitle className="text-xl flex items-center gap-2">
+              <CardTitle className="font-open-sans text-t3 flex items-center gap-2">
                 📊 Setup Type
               </CardTitle>
             </CardHeader>
@@ -192,14 +192,14 @@ const Journaling = () => {
           {/* Trade Details */}
           <Card className="glass-effect hover-float rounded-16 shadow-menu">
             <CardHeader>
-              <CardTitle className="text-xl flex items-center gap-2">
+              <CardTitle className="font-open-sans text-t3 flex items-center gap-2">
                 📈 Trade Details
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div>
-                  <Label htmlFor="side" className="text-sm font-medium">Side</Label>
+                  <Label htmlFor="side" className="font-open-sans text-t-1 font-medium">Side</Label>
                   <Select
                     value={formData.side}
                     onValueChange={(value: 'LONG' | 'SHORT') => handleInputChange('side', value)}
@@ -215,7 +215,7 @@ const Journaling = () => {
                 </div>
                 
                 <div>
-                  <Label htmlFor="entry" className="text-sm font-medium">Entry</Label>
+                  <Label htmlFor="entry" className="font-open-sans text-t-1 font-medium">Entry</Label>
                   <Input
                     id="entry"
                     type="text"
@@ -227,7 +227,7 @@ const Journaling = () => {
                 </div>
                 
                 <div>
-                  <Label htmlFor="tp" className="text-sm font-medium">Take Profit</Label>
+                  <Label htmlFor="tp" className="font-open-sans text-t-1 font-medium">Take Profit</Label>
                   <Input
                     id="tp"
                     type="text"
@@ -239,7 +239,7 @@ const Journaling = () => {
                 </div>
                 
                 <div>
-                  <Label htmlFor="sl" className="text-sm font-medium">Stop Loss</Label>
+                  <Label htmlFor="sl" className="font-open-sans text-t-1 font-medium">Stop Loss</Label>
                   <Input
                     id="sl"
                     type="text"
@@ -251,7 +251,7 @@ const Journaling = () => {
                 </div>
                 
                 <div>
-                  <Label htmlFor="contracts" className="text-sm font-medium">Contracts</Label>
+                  <Label htmlFor="contracts" className="font-open-sans text-t-1 font-medium">Contracts</Label>
                   <Input
                     id="contracts"
                     type="text"
@@ -268,7 +268,7 @@ const Journaling = () => {
           {/* Execution Notes */}
           <Card className="glass-effect hover-float rounded-16 shadow-menu">
             <CardHeader>
-              <CardTitle className="text-xl flex items-center gap-2">
+              <CardTitle className="font-open-sans text-t3 flex items-center gap-2">
                 📝 Execution Notes
               </CardTitle>
             </CardHeader>
@@ -289,7 +289,7 @@ const Journaling = () => {
           {/* Emotional/Mental Notes */}
           <Card className="glass-effect hover-float rounded-16 shadow-menu">
             <CardHeader>
-              <CardTitle className="text-xl flex items-center gap-2">
+              <CardTitle className="font-open-sans text-t3 flex items-center gap-2">
                 🧠 Emotional & Mental State
               </CardTitle>
             </CardHeader>
@@ -299,7 +299,7 @@ const Journaling = () => {
                   <Badge
                     key={state.id}
                     variant={selectedMentalStates.includes(state.id) ? "default" : "outline"}
-                    className={`cursor-pointer transition-all duration-200 hover:scale-105 rounded-8 px-4 py-2 ${
+                    className={`cursor-pointer transition-all duration-200 hover:scale-105 rounded-8 px-4 py-2 font-open-sans text-t-1 ${
                       selectedMentalStates.includes(state.id) 
                         ? `${state.color} text-white shadow-colored` 
                         : 'hover:bg-accent'
@@ -322,7 +322,7 @@ const Journaling = () => {
                 {hasUnsavedChanges && (
                   <>
                     <AlertCircle className="h-4 w-4 text-warning" />
-                    <span className="text-sm text-muted-foreground">Unsaved changes</span>
+                    <span className="font-open-sans text-t-1 text-muted-foreground">Unsaved changes</span>
                   </>
                 )}
               </div>
@@ -331,7 +331,7 @@ const Journaling = () => {
                 <Button
                   variant="outline"
                   onClick={handleBackToChecklist}
-                  className="rounded-8 shadow-menu hover:shadow-floating"
+                  className="rounded-8 shadow-menu hover:shadow-floating font-open-sans text-t0"
                 >
                   <ChevronLeft className="h-4 w-4 mr-2" />
                   Back to Checklist
@@ -339,7 +339,7 @@ const Journaling = () => {
                 
                 <Button
                   onClick={handleSaveJournal}
-                  className="bg-gradient-primary hover:bg-gradient-accent text-primary-foreground rounded-8 shadow-menu hover:shadow-floating px-6"
+                  className="bg-gradient-primary hover:bg-gradient-accent text-primary-foreground rounded-8 shadow-menu hover:shadow-floating px-6 font-open-sans text-t0 font-medium"
                 >
                   <Save className="h-4 w-4 mr-2" />
                   Save Journal
