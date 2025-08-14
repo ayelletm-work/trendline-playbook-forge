@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Checkbox } from './ui/checkbox';
 import { Badge } from './ui/badge';
@@ -6,6 +7,7 @@ import { Button } from './ui/button';
 import { ChevronRight } from 'lucide-react';
 
 const Checklist = () => {
+  const navigate = useNavigate();
   const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>({});
   const [showStartButton, setShowStartButton] = useState(false);
   const [hasInteracted, setHasInteracted] = useState(false);
@@ -31,10 +33,8 @@ const Checklist = () => {
   };
 
   const handleStartMyDay = () => {
-    // This could navigate to the journal or next step
-    console.log('Starting my day!');
-    // For now, we'll just hide the button as feedback
-    setShowStartButton(false);
+    // Navigate to journaling page
+    navigate('/journaling');
   };
 
   useEffect(() => {
@@ -261,7 +261,7 @@ const Checklist = () => {
           <Button
             onClick={handleStartMyDay}
             size="lg"
-            className="bg-gradient-primary hover:bg-gradient-accent text-primary-foreground shadow-floating hover:shadow-dialog transition-all duration-300 transform hover:scale-105 rounded-20 px-8 py-6 text-lg font-semibold group glass-effect hover-glow"
+            className="bg-gradient-primary hover:bg-gradient-accent text-primary-foreground shadow-floating hover:shadow-dialog transition-all duration-300 transform hover:scale-105 rounded-20 px-8 py-6 text-lg font-semibold group glass-effect hover-glow animate-fade-in"
           >
             Start My Day
             <ChevronRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
@@ -275,7 +275,7 @@ const Checklist = () => {
           <Button
             onClick={handleStartMyDay}
             size="lg"
-            className="bg-gradient-primary hover:bg-gradient-accent text-primary-foreground shadow-floating hover:shadow-dialog transition-all duration-300 transform hover:scale-105 rounded-20 px-8 py-4 text-lg font-semibold group glass-effect hover-glow"
+            className="bg-gradient-primary hover:bg-gradient-accent text-primary-foreground shadow-floating hover:shadow-dialog transition-all duration-300 transform hover:scale-105 rounded-20 px-8 py-4 text-lg font-semibold group glass-effect hover-glow animate-fade-in"
           >
             Start My Day
             <ChevronRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
