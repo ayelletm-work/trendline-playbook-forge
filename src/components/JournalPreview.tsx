@@ -7,7 +7,7 @@ import {
 } from '@mui/material';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import DownloadIcon from '@mui/icons-material/Download';
-import { Eye, Copy, Download } from 'lucide-react';
+import { Eye, Copy, Download, TrendingUp, TrendingDown, Target } from 'lucide-react';
 import { JournalData, generateJournalText } from '../utils/journalGenerator';
 
 interface JournalPreviewProps {
@@ -16,6 +16,33 @@ interface JournalPreviewProps {
 
 const JournalPreview: React.FC<JournalPreviewProps> = ({ journalData }) => {
   const journalText = generateJournalText(journalData);
+
+  // Calculate potential win/loss based on trade data
+  const calculateTradeOutcome = () => {
+    const entryPrice = parseFloat(journalData.entry);
+    const stopLoss = parseFloat(journalData.stopLoss);
+    const takeProfit1 = parseFloat(journalData.takeProfit1);
+    const riskAmount = parseFloat(journalData.risk.replace(/[^0-9.-]/g, ''));
+    
+    if (!entryPrice || !stopLoss || !takeProfit1 || !riskAmount) {
+      return { type: 'neutral', amount: 0, rrRatio: '0:0' };
+    }
+
+    const isLong = journalData.side === 'LONG';
+    const riskDistance = Math.abs(entryPrice - stopLoss);
+    const rewardDistance = Math.abs(takeProfit1 - entryPrice);
+    const rrRatio = riskDistance > 0 ? (rewardDistance / riskDistance).toFixed(1) : '0';
+    const potentialWin = (rewardDistance / riskDistance) * riskAmount;
+
+    return {
+      type: potentialWin > riskAmount ? 'win' : 'loss',
+      amount: potentialWin,
+      rrRatio: `${rrRatio}:1`,
+      riskAmount
+    };
+  };
+
+  const outcome = calculateTradeOutcome();
 
   const copyToClipboard = async () => {
     try {
@@ -102,6 +129,68 @@ const JournalPreview: React.FC<JournalPreviewProps> = ({ journalData }) => {
             Download .txt
           </Button>
         </Box>
+      </Box>
+
+      {/* Trade Outcome Display */}
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: 2,
+          p: 2,
+          mb: 3,
+          borderRadius: 2,
+          background: outcome.type === 'win' 
+            ? 'linear-gradient(135deg, #22c55e, #16a34a)' 
+            : outcome.type === 'loss' 
+            ? 'linear-gradient(135deg, #ef4444, #dc2626)'
+            : 'linear-gradient(135deg, #6b7280, #4b5563)',
+          color: 'white',
+          boxShadow: 'var(--shadow-medium)',
+          animation: 'pulse 2s infinite'
+        }}
+      >
+        {outcome.type === 'win' ? (
+          <TrendingUp size={24} className="animate-bounce" />
+        ) : outcome.type === 'loss' ? (
+          <TrendingDown size={24} className="animate-bounce" />
+        ) : (
+          <Target size={24} className="animate-spin" />
+        )}
+        
+        <Box sx={{ textAlign: 'center' }}>
+          <Typography variant="h6" fontWeight="bold">
+            {outcome.type === 'win' ? '🎉 Potential Win!' : 
+             outcome.type === 'loss' ? '⚠️ High Risk Trade' : 
+             '📊 Trade Analysis'}
+          </Typography>
+          <Typography variant="body2" sx={{ opacity: 0.9 }}>
+            {outcome.amount > 0 && (
+              <>
+                Risk: ${outcome.riskAmount?.toFixed(2)} | 
+                Reward: ${outcome.amount.toFixed(2)} | 
+                R:R {outcome.rrRatio}
+              </>
+            )}
+            {outcome.amount === 0 && 'Complete trade details to see analysis'}
+          </Typography>
+        </Box>
+
+        {outcome.type === 'win' && (
+          <Box sx={{ display: 'flex', gap: 0.5 }}>
+            <span>🚀</span>
+            <span>💰</span>
+            <span>⭐</span>
+          </Box>
+        )}
+        {outcome.type === 'loss' && (
+          <Box sx={{ display: 'flex', gap: 0.5 }}>
+            <span>🛡️</span>
+            <span>📉</span>
+            <span>⚡</span>
+          </Box>
+        )}
       </Box>
 
       <Box
