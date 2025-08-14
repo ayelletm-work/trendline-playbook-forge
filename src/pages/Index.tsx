@@ -67,11 +67,12 @@ const MainContent: React.FC = () => {
       </AppBar>
 
       <Container 
-        maxWidth="lg" 
+        maxWidth="xl" 
         sx={{ 
           py: 4,
           background: 'radial-gradient(ellipse at top, rgba(59, 130, 246, 0.05) 0%, transparent 70%)',
-          minHeight: 'calc(100vh - 64px)'
+          minHeight: 'calc(100vh - 64px)',
+          height: 'auto'
         }}
       >
         <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 4 }}>

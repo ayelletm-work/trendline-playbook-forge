@@ -438,80 +438,70 @@ const JournalForm: React.FC<JournalFormProps> = ({ onDataChange, onReset }) => {
         </Typography>
       </Box>
 
-      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, mb: 3 }}>
-        <Box sx={{ flex: '1 1 200px', minWidth: 200 }}>
-          <TextField
-            fullWidth
-            label="Date"
-            value={formData.date}
-            onChange={(e) => handleInputChange('date', e.target.value)}
-            size="small"
+      <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 2, mb: 3 }}>
+        <TextField
+          fullWidth
+          label="Date"
+          value={formData.date}
+          onChange={(e) => handleInputChange('date', e.target.value)}
+          size="small"
+          sx={{ 
+            '& .MuiOutlinedInput-root': { 
+              transition: 'all 0.3s ease',
+              '&:hover': { boxShadow: 'var(--shadow-soft)' }
+            } 
+          }}
+        />
+        <FormControl fullWidth size="small">
+          <InputLabel>Session</InputLabel>
+          <Select
+            value={formData.session}
+            onChange={(e) => handleInputChange('session', e.target.value)}
+            label="Session"
             sx={{ 
               '& .MuiOutlinedInput-root': { 
                 transition: 'all 0.3s ease',
                 '&:hover': { boxShadow: 'var(--shadow-soft)' }
               } 
             }}
-          />
-        </Box>
-        <Box sx={{ flex: '1 1 200px', minWidth: 200 }}>
-          <FormControl fullWidth size="small">
-            <InputLabel>Session</InputLabel>
-            <Select
-              value={formData.session}
-              onChange={(e) => handleInputChange('session', e.target.value)}
-              label="Session"
-              sx={{ 
-                '& .MuiOutlinedInput-root': { 
-                  transition: 'all 0.3s ease',
-                  '&:hover': { boxShadow: 'var(--shadow-soft)' }
-                } 
-              }}
-            >
-              <MenuItem value="Asia">Asia</MenuItem>
-              <MenuItem value="New York">New York</MenuItem>
-              <MenuItem value="London">London</MenuItem>
-              <MenuItem value="Tokyo">Tokyo</MenuItem>
-            </Select>
-          </FormControl>
-        </Box>
-        <Box sx={{ flex: '1 1 100%', minWidth: 200 }}>
-          <TextField
-            fullWidth
-            label="Setup Type"
-            value={formData.setupType}
-            onChange={(e) => handleInputChange('setupType', e.target.value)}
-            size="small"
-            sx={{ 
-              '& .MuiOutlinedInput-root': { 
-                transition: 'all 0.3s ease',
-                '&:hover': { boxShadow: 'var(--shadow-soft)' }
-              } 
-            }}
-          />
-        </Box>
+          >
+            <MenuItem value="Asia">Asia</MenuItem>
+            <MenuItem value="New York">New York</MenuItem>
+            <MenuItem value="London">London</MenuItem>
+            <MenuItem value="Tokyo">Tokyo</MenuItem>
+          </Select>
+        </FormControl>
+        <TextField
+          fullWidth
+          label="Setup Type"
+          value={formData.setupType}
+          onChange={(e) => handleInputChange('setupType', e.target.value)}
+          size="small"
+          sx={{ 
+            gridColumn: 'span 2',
+            '& .MuiOutlinedInput-root': { 
+              transition: 'all 0.3s ease',
+              '&:hover': { boxShadow: 'var(--shadow-soft)' }
+            } 
+          }}
+        />
       </Box>
 
       {/* New Select Components */}
-      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, mb: 3 }}>
-        <Box sx={{ flex: '1 1 200px', minWidth: 200 }}>
-          <SessionTypeSelect
-            value={formData.sessionType}
-            onChange={(value) => handleInputChange('sessionType', value)}
-          />
-        </Box>
-        <Box sx={{ flex: '1 1 200px', minWidth: 200 }}>
-          <InstrumentSelect
-            value={formData.instrument}
-            onChange={(value) => handleInputChange('instrument', value)}
-          />
-        </Box>
-        <Box sx={{ flex: '1 1 200px', minWidth: 200 }}>
-          <TimeframeSelect
-            value={formData.timeframe}
-            onChange={(value) => handleInputChange('timeframe', value)}
-          />
-        </Box>
+      <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 2, mb: 3 }}>
+        <SessionTypeSelect
+          value={formData.sessionType}
+          onChange={(value) => handleInputChange('sessionType', value)}
+        />
+        <InstrumentSelect
+          value={formData.instrument}
+          onChange={(value) => handleInputChange('instrument', value)}
+        />
+        <TimeframeSelect
+          value={formData.timeframe}
+          onChange={(value) => handleInputChange('timeframe', value)}
+        />
+        <Box></Box>
       </Box>
 
       {/* Playbook Select */}
@@ -534,157 +524,145 @@ const JournalForm: React.FC<JournalFormProps> = ({ onDataChange, onReset }) => {
         {renderArrayInput('bullets', 'Bullets', '📍', FileText)}
       </Box>
 
-      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, mb: 3 }}>
-        <Box sx={{ flex: '1 1 200px', minWidth: 200 }}>
-          <FormControl fullWidth size="small">
-            <InputLabel>Side</InputLabel>
-            <Select
-              value={formData.side}
-              label="Side"
-              onChange={(e) => handleInputChange('side', e.target.value)}
-              sx={{
-                '& .MuiSelect-select': {
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 1
-                }
-              }}
-            >
-              <MenuItem value="LONG">
-                LONG
-              </MenuItem>
-              <MenuItem value="SHORT">
-                SHORT
-              </MenuItem>
-            </Select>
-          </FormControl>
-        </Box>
-        <Box sx={{ flex: '1 1 200px', minWidth: 200 }}>
-          <TextField
-            fullWidth
-            label="Entry"
-            value={formData.entry}
-            onChange={(e) => handleInputChange('entry', e.target.value)}
-            size="small"
-            sx={{ 
-              '& .MuiOutlinedInput-root': {
-                transition: 'all 0.3s ease',
-                '&:hover': { boxShadow: 'var(--shadow-soft)' }
+      <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 2, mb: 3 }}>
+        <FormControl fullWidth size="small">
+          <InputLabel>Side</InputLabel>
+          <Select
+            value={formData.side}
+            label="Side"
+            onChange={(e) => handleInputChange('side', e.target.value)}
+            sx={{
+              '& .MuiSelect-select': {
+                display: 'flex',
+                alignItems: 'center',
+                gap: 1
               }
             }}
-          />
-        </Box>
-        <Box sx={{ flex: '1 1 200px', minWidth: 200 }}>
-          <TextField
-            fullWidth
-            label="Stop Loss"
-            value={formData.stopLoss}
-            onChange={(e) => handleInputChange('stopLoss', e.target.value)}
-            size="small"
-            sx={{ 
-              '& .MuiOutlinedInput-root': {
-                transition: 'all 0.3s ease',
-                '&:hover': { boxShadow: 'var(--shadow-soft)' }
-              }
-            }}
-          />
-        </Box>
-        <Box sx={{ flex: '1 1 200px', minWidth: 200 }}>
-          <TextField
-            fullWidth
-            label="TP1"
-            value={formData.takeProfit1}
-            onChange={(e) => handleInputChange('takeProfit1', e.target.value)}
-            size="small"
-            sx={{ 
-              '& .MuiOutlinedInput-root': {
-                transition: 'all 0.3s ease',
-                '&:hover': { boxShadow: 'var(--shadow-soft)' }
-              }
-            }}
-          />
-        </Box>
-        <Box sx={{ flex: '1 1 200px', minWidth: 200 }}>
-          <TextField
-            fullWidth
-            label="TP2"
-            value={formData.takeProfit2}
-            onChange={(e) => handleInputChange('takeProfit2', e.target.value)}
-            size="small"
-            sx={{ 
-              '& .MuiOutlinedInput-root': {
-                transition: 'all 0.3s ease',
-                '&:hover': { boxShadow: 'var(--shadow-soft)' }
-              }
-            }}
-          />
-        </Box>
-        <Box sx={{ flex: '1 1 200px', minWidth: 200 }}>
-          <TextField
-            fullWidth
-            label="Contracts"
-            value={formData.contracts}
-            onChange={(e) => handleInputChange('contracts', e.target.value)}
-            size="small"
-            sx={{ 
-              '& .MuiOutlinedInput-root': {
-                transition: 'all 0.3s ease',
-                '&:hover': { boxShadow: 'var(--shadow-soft)' }
-              }
-            }}
-          />
-        </Box>
-        <Box sx={{ flex: '1 1 200px', minWidth: 200 }}>
-          <TextField
-            fullWidth
-            label="Account Balance"
-            value={formData.accountBalance}
-            onChange={(e) => {
-              handleInputChange('accountBalance', e.target.value);
-              setIsRiskManuallyEdited(false); // Reset manual edit flag when balance changes
-            }}
-            size="small"
-            type="number"
-            sx={{ 
-              '& .MuiOutlinedInput-root': { 
-                transition: 'all 0.3s ease',
-                '&:hover': { boxShadow: 'var(--shadow-soft)' }
-              } 
-            }}
-          />
-        </Box>
-        <Box sx={{ flex: '1 1 200px', minWidth: 200 }}>
-          <TextField
-            fullWidth
-            label="Risk (2% Auto-calc)"
-            value={formData.risk}
-            onChange={(e) => handleRiskChange(e.target.value)}
-            size="small"
-            sx={{ 
-              '& .MuiOutlinedInput-root': { 
-                transition: 'all 0.3s ease',
-                '&:hover': { boxShadow: 'var(--shadow-soft)' },
-                backgroundColor: isRiskManuallyEdited ? 'rgba(255, 193, 7, 0.1)' : 'rgba(34, 197, 94, 0.1)'
-              } 
-            }}
-            helperText={isRiskManuallyEdited ? "Manually edited" : "Auto-calculated (2% of balance)"}
-          />
-        </Box>
-        <Box sx={{ flex: '1 1 200px', minWidth: 200 }}>
-          <TextField
-            fullWidth
-            label="Reward Potential"
-            value={formData.rewardPotential}
-            onChange={(e) => handleInputChange('rewardPotential', e.target.value)}
-            size="small"
-            sx={{ 
-              '& .MuiOutlinedInput-root': {
-                transition: 'all 0.3s ease',
-                '&:hover': { boxShadow: 'var(--shadow-soft)' }
-              }
-            }}
-          />
-        </Box>
+          >
+            <MenuItem value="LONG">
+              LONG
+            </MenuItem>
+            <MenuItem value="SHORT">
+              SHORT
+            </MenuItem>
+          </Select>
+        </FormControl>
+        <TextField
+          fullWidth
+          label="Entry"
+          value={formData.entry}
+          onChange={(e) => handleInputChange('entry', e.target.value)}
+          size="small"
+          sx={{ 
+            '& .MuiOutlinedInput-root': {
+              transition: 'all 0.3s ease',
+              '&:hover': { boxShadow: 'var(--shadow-soft)' }
+            }
+          }}
+        />
+        <TextField
+          fullWidth
+          label="Stop Loss"
+          value={formData.stopLoss}
+          onChange={(e) => handleInputChange('stopLoss', e.target.value)}
+          size="small"
+          sx={{ 
+            '& .MuiOutlinedInput-root': {
+              transition: 'all 0.3s ease',
+              '&:hover': { boxShadow: 'var(--shadow-soft)' }
+            }
+          }}
+        />
+        <TextField
+          fullWidth
+          label="TP1"
+          value={formData.takeProfit1}
+          onChange={(e) => handleInputChange('takeProfit1', e.target.value)}
+          size="small"
+          sx={{ 
+            '& .MuiOutlinedInput-root': {
+              transition: 'all 0.3s ease',
+              '&:hover': { boxShadow: 'var(--shadow-soft)' }
+            }
+          }}
+        />
+        <TextField
+          fullWidth
+          label="TP2"
+          value={formData.takeProfit2}
+          onChange={(e) => handleInputChange('takeProfit2', e.target.value)}
+          size="small"
+          sx={{ 
+            '& .MuiOutlinedInput-root': {
+              transition: 'all 0.3s ease',
+              '&:hover': { boxShadow: 'var(--shadow-soft)' }
+            }
+          }}
+        />
+        <TextField
+          fullWidth
+          label="Contracts"
+          value={formData.contracts}
+          onChange={(e) => handleInputChange('contracts', e.target.value)}
+          size="small"
+          sx={{ 
+            '& .MuiOutlinedInput-root': {
+              transition: 'all 0.3s ease',
+              '&:hover': { boxShadow: 'var(--shadow-soft)' }
+            }
+          }}
+        />
+        <TextField
+          fullWidth
+          label="Account Balance"
+          value={formData.accountBalance}
+          onChange={(e) => {
+            handleInputChange('accountBalance', e.target.value);
+            setIsRiskManuallyEdited(false); // Reset manual edit flag when balance changes
+          }}
+          size="small"
+          type="number"
+          sx={{ 
+            '& .MuiOutlinedInput-root': { 
+              transition: 'all 0.3s ease',
+              '&:hover': { boxShadow: 'var(--shadow-soft)' }
+            } 
+          }}
+        />
+        <TextField
+          fullWidth
+          label="Risk (2% Auto-calc)"
+          value={formData.risk}
+          onChange={(e) => handleRiskChange(e.target.value)}
+          size="small"
+          sx={{ 
+            '& .MuiOutlinedInput-root': { 
+              transition: 'all 0.3s ease',
+              '&:hover': { boxShadow: 'var(--shadow-soft)' },
+              backgroundColor: isRiskManuallyEdited ? 'rgba(255, 193, 7, 0.1)' : 'rgba(34, 197, 94, 0.1)'
+            } 
+          }}
+          helperText={isRiskManuallyEdited ? "Manually edited" : "Auto-calculated (2% of balance)"}
+        />
+      </Box>
+
+      <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 2, mb: 3 }}>
+        <TextField
+          fullWidth
+          label="Reward Potential"
+          value={formData.rewardPotential}
+          onChange={(e) => handleInputChange('rewardPotential', e.target.value)}
+          size="small"
+          sx={{ 
+            '& .MuiOutlinedInput-root': {
+              transition: 'all 0.3s ease',
+              '&:hover': { boxShadow: 'var(--shadow-soft)' }
+            }
+          }}
+        />
+        <Box></Box>
+        <Box></Box>
+        <Box></Box>
       </Box>
 
       {/* Exit Section */}
