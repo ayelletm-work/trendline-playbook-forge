@@ -1,24 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
-import { Textarea } from '../components/ui/textarea';
-import { Input } from '../components/ui/input';
-import { Label } from '../components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
 import { ChevronLeft, Save, AlertCircle } from 'lucide-react';
 import { useToast } from '../hooks/use-toast';
-import { JournalData, defaultJournalData } from '../utils/journalGenerator';
 import { saveToLocalStorage, loadFromLocalStorage } from '../utils/localStorage';
+import { TradeCalculationResults } from '../utils/tradeCalculations';
+import EnhancedJournalingForm from '../components/EnhancedJournalingForm';
+import RichSummaryPanel from '../components/RichSummaryPanel';
 
 const Journaling = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
-  const [formData, setFormData] = useState<JournalData>(() =>
-    loadFromLocalStorage('journal-form-data', defaultJournalData)
-  );
+  const [calculations, setCalculations] = useState<TradeCalculationResults | null>(null);
+  const [formData, setFormData] = useState<any>({});
+
+  const [selectedSessions, setSelectedSessions] = useState<string[]>([]);
 
   // Session tag options
   const sessionTags = [
@@ -28,32 +26,6 @@ const Journaling = () => {
     { id: 'tokyo', label: 'Tokyo', color: 'bg-purple' }
   ];
 
-  // Setup type options
-  const setupTypes = [
-    'Trendline Break',
-    'Retest',
-    'Bounce',
-    'Breakout',
-    'Pullback',
-    'Support/Resistance',
-    'Counter Trend'
-  ];
-
-  // Emotional/Mental state chips
-  const mentalStates = [
-    { id: 'calm', label: 'Calm', color: 'bg-success' },
-    { id: 'fomo', label: 'FOMO', color: 'bg-destructive' },
-    { id: 'patience', label: 'Patience', color: 'bg-emerald' },
-    { id: 'discipline', label: 'Discipline', color: 'bg-primary' },
-    { id: 'confident', label: 'Confident', color: 'bg-info' },
-    { id: 'uncertain', label: 'Uncertain', color: 'bg-warning' },
-    { id: 'rushed', label: 'Rushed', color: 'bg-destructive' },
-    { id: 'focused', label: 'Focused', color: 'bg-purple' }
-  ];
-
-  const [selectedSessions, setSelectedSessions] = useState<string[]>([]);
-  const [selectedMentalStates, setSelectedMentalStates] = useState<string[]>([]);
-
   // Focus management for accessibility
   useEffect(() => {
     const titleElement = document.querySelector('h1');
@@ -62,9 +34,13 @@ const Journaling = () => {
     }
   }, []);
 
-  // Track unsaved changes
-  const handleInputChange = (field: keyof JournalData, value: any) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+  const handleCalculationsChange = (newCalculations: TradeCalculationResults) => {
+    setCalculations(newCalculations);
+    setHasUnsavedChanges(true);
+  };
+
+  const handleFormDataChange = (newFormData: any) => {
+    setFormData(newFormData);
     setHasUnsavedChanges(true);
   };
 
@@ -77,31 +53,20 @@ const Journaling = () => {
     setHasUnsavedChanges(true);
   };
 
-  const toggleMentalState = (stateId: string) => {
-    setSelectedMentalStates(prev => 
-      prev.includes(stateId)
-        ? prev.filter(id => id !== stateId)
-        : [...prev, stateId]
-    );
-    setHasUnsavedChanges(true);
-  };
-
   const handleSaveJournal = () => {
-    // Update form data with selected tags
+    // Update form data with selected sessions
     const updatedData = {
       ...formData,
-      session: selectedSessions.join(', '),
-      tags: [...formData.tags, ...selectedMentalStates.map(id => 
-        mentalStates.find(state => state.id === id)?.label || id
-      )]
+      sessionTags: selectedSessions,
+      calculations
     };
     
-    saveToLocalStorage('journal-form-data', updatedData);
+    saveToLocalStorage('enhanced-journal-form-data', updatedData);
     setHasUnsavedChanges(false);
     
     toast({
       title: "Journal Saved",
-      description: "Your trading journal has been saved successfully.",
+      description: "Your enhanced trading journal has been saved successfully.",
     });
   };
 
@@ -123,27 +88,26 @@ const Journaling = () => {
 
   return (
     <div className="min-h-screen bg-gradient-radial">
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
+      <div className="container mx-auto px-4 py-8 max-w-7xl">
         {/* Header */}
         <div className="mb-8">
           <h1 
             className="font-titillium text-tit-4xl text-foreground mb-2 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-4"
             tabIndex={-1}
           >
-            Daily Journal
+            Enhanced Trading Journal
           </h1>
           <p className="font-open-sans text-t1 text-muted-foreground">{todayDate}</p>
         </div>
 
-        <div className="space-y-8">
-          {/* Session Tags */}
-          <Card className="glass-effect hover-float rounded-16 shadow-menu">
-            <CardHeader>
-              <CardTitle className="font-open-sans text-t3 flex items-center gap-2">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Left Column - Form */}
+          <div className="lg:col-span-2 space-y-6">
+            {/* Session Tags */}
+            <div className="mb-6">
+              <h3 className="font-open-sans text-t3 mb-4 flex items-center gap-2">
                 🌍 Session Tags
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
+              </h3>
               <div className="flex flex-wrap gap-3">
                 {sessionTags.map(session => (
                   <Badge
@@ -160,158 +124,36 @@ const Journaling = () => {
                   </Badge>
                 ))}
               </div>
-            </CardContent>
-          </Card>
+            </div>
 
-          {/* Setup Type */}
-          <Card className="glass-effect hover-float rounded-16 shadow-menu">
-            <CardHeader>
-              <CardTitle className="font-open-sans text-t3 flex items-center gap-2">
-                📊 Setup Type
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Select
-                value={formData.setupType}
-                onValueChange={(value) => handleInputChange('setupType', value)}
-              >
-                <SelectTrigger className="w-full rounded-8 shadow-toggle-disable focus:shadow-toggle-active">
-                  <SelectValue placeholder="Select setup type" />
-                </SelectTrigger>
-                <SelectContent>
-                  {setupTypes.map(type => (
-                    <SelectItem key={type} value={type}>
-                      {type}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </CardContent>
-          </Card>
+            {/* Enhanced Form */}
+            <EnhancedJournalingForm
+              onCalculationsChange={handleCalculationsChange}
+              onFormDataChange={handleFormDataChange}
+            />
+          </div>
 
-          {/* Trade Details */}
-          <Card className="glass-effect hover-float rounded-16 shadow-menu">
-            <CardHeader>
-              <CardTitle className="font-open-sans text-t3 flex items-center gap-2">
-                📈 Trade Details
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                <div>
-                  <Label htmlFor="side" className="font-open-sans text-t-1 font-medium">Side</Label>
-                  <Select
-                    value={formData.side}
-                    onValueChange={(value: 'LONG' | 'SHORT') => handleInputChange('side', value)}
-                  >
-                    <SelectTrigger id="side" className="rounded-8 shadow-toggle-disable focus:shadow-toggle-active">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="LONG">LONG</SelectItem>
-                      <SelectItem value="SHORT">SHORT</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                
-                <div>
-                  <Label htmlFor="entry" className="font-open-sans text-t-1 font-medium">Entry</Label>
-                  <Input
-                    id="entry"
-                    type="text"
-                    value={formData.entry}
-                    onChange={(e) => handleInputChange('entry', e.target.value)}
-                    className="rounded-8 shadow-toggle-disable focus:shadow-toggle-active"
-                    placeholder="1.2750"
-                  />
-                </div>
-                
-                <div>
-                  <Label htmlFor="tp" className="font-open-sans text-t-1 font-medium">Take Profit</Label>
-                  <Input
-                    id="tp"
-                    type="text"
-                    value={formData.takeProfit1}
-                    onChange={(e) => handleInputChange('takeProfit1', e.target.value)}
-                    className="rounded-8 shadow-toggle-disable focus:shadow-toggle-active"
-                    placeholder="1.2850"
-                  />
-                </div>
-                
-                <div>
-                  <Label htmlFor="sl" className="font-open-sans text-t-1 font-medium">Stop Loss</Label>
-                  <Input
-                    id="sl"
-                    type="text"
-                    value={formData.stopLoss}
-                    onChange={(e) => handleInputChange('stopLoss', e.target.value)}
-                    className="rounded-8 shadow-toggle-disable focus:shadow-toggle-active"
-                    placeholder="1.2700"
-                  />
-                </div>
-                
-                <div>
-                  <Label htmlFor="contracts" className="font-open-sans text-t-1 font-medium">Contracts</Label>
-                  <Input
-                    id="contracts"
-                    type="text"
-                    value={formData.contracts}
-                    onChange={(e) => handleInputChange('contracts', e.target.value)}
-                    className="rounded-8 shadow-toggle-disable focus:shadow-toggle-active"
-                    placeholder="0.5 lots"
-                  />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Execution Notes */}
-          <Card className="glass-effect hover-float rounded-16 shadow-menu">
-            <CardHeader>
-              <CardTitle className="font-open-sans text-t3 flex items-center gap-2">
-                📝 Execution Notes
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Textarea
-                value={formData.bullets.join('\n')}
-                onChange={(e) => handleInputChange('bullets', e.target.value.split('\n'))}
-                placeholder="What happened? What did I do well? What to improve?
-
-• Waited for proper confirmation
-• Risk management followed
-• Could have been more patient on entry"
-                className="min-h-32 rounded-8 shadow-toggle-disable focus:shadow-toggle-active"
+          {/* Right Column - Rich Summary */}
+          <div className="lg:col-span-1">
+            {calculations && formData.entry && (
+              <RichSummaryPanel
+                side={formData.side || 'LONG'}
+                contracts={parseFloat(formData.contracts) || 1}
+                instrument={formData.instrumentSymbol || 'MGC1!'}
+                sessionTags={selectedSessions.map(id => 
+                  sessionTags.find(tag => tag.id === id)?.label || id
+                )}
+                calculations={calculations}
+                entry={parseFloat(formData.entry)}
+                exit={formData.exit ? parseFloat(formData.exit) : undefined}
+                stopLoss={formData.stopLoss ? parseFloat(formData.stopLoss) : undefined}
+                profitTarget={formData.profitTarget ? parseFloat(formData.profitTarget) : undefined}
+                startTime={formData.startTime}
+                endTime={formData.endTime}
+                tradeRating={formData.tradeRating || 0}
               />
-            </CardContent>
-          </Card>
-
-          {/* Emotional/Mental Notes */}
-          <Card className="glass-effect hover-float rounded-16 shadow-menu">
-            <CardHeader>
-              <CardTitle className="font-open-sans text-t3 flex items-center gap-2">
-                🧠 Emotional & Mental State
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="flex flex-wrap gap-3">
-                {mentalStates.map(state => (
-                  <Badge
-                    key={state.id}
-                    variant={selectedMentalStates.includes(state.id) ? "default" : "outline"}
-                    className={`cursor-pointer transition-all duration-200 hover:scale-105 rounded-8 px-4 py-2 font-open-sans text-t-1 ${
-                      selectedMentalStates.includes(state.id) 
-                        ? `${state.color} text-white shadow-colored` 
-                        : 'hover:bg-accent'
-                    }`}
-                    onClick={() => toggleMentalState(state.id)}
-                  >
-                    {state.label}
-                  </Badge>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
+            )}
+          </div>
         </div>
 
         {/* Sticky Footer */}
