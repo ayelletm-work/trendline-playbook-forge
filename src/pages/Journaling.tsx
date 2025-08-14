@@ -6,15 +6,14 @@ import { ChevronLeft, Save, AlertCircle } from 'lucide-react';
 import { useToast } from '../hooks/use-toast';
 import { saveToLocalStorage, loadFromLocalStorage } from '../utils/localStorage';
 import { TradeCalculationResults } from '../utils/tradeCalculations';
-import EnhancedJournalingForm from '../components/EnhancedJournalingForm';
+import TradeTable from '../components/TradeTable';
 import RichSummaryPanel from '../components/RichSummaryPanel';
 
 const Journaling = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
-  const [calculations, setCalculations] = useState<TradeCalculationResults | null>(null);
-  const [formData, setFormData] = useState<any>({});
+  const [tradeData, setTradeData] = useState<any[]>([]);
 
   const [selectedSessions, setSelectedSessions] = useState<string[]>([]);
 
@@ -34,13 +33,8 @@ const Journaling = () => {
     }
   }, []);
 
-  const handleCalculationsChange = (newCalculations: TradeCalculationResults) => {
-    setCalculations(newCalculations);
-    setHasUnsavedChanges(true);
-  };
-
-  const handleFormDataChange = (newFormData: any) => {
-    setFormData(newFormData);
+  const handleTradeDataChange = (newTradeData: any[]) => {
+    setTradeData(newTradeData);
     setHasUnsavedChanges(true);
   };
 
@@ -54,19 +48,17 @@ const Journaling = () => {
   };
 
   const handleSaveJournal = () => {
-    // Update form data with selected sessions
     const updatedData = {
-      ...formData,
-      sessionTags: selectedSessions,
-      calculations
+      tradeData,
+      sessionTags: selectedSessions
     };
     
-    saveToLocalStorage('enhanced-journal-form-data', updatedData);
+    saveToLocalStorage('trade-journal-data', updatedData);
     setHasUnsavedChanges(false);
     
     toast({
       title: "Journal Saved",
-      description: "Your enhanced trading journal has been saved successfully.",
+      description: "Your trading journal has been saved successfully.",
     });
   };
 
@@ -126,31 +118,46 @@ const Journaling = () => {
               </div>
             </div>
 
-            {/* Enhanced Form */}
-            <EnhancedJournalingForm
-              onCalculationsChange={handleCalculationsChange}
-              onFormDataChange={handleFormDataChange}
+            {/* Trade Table */}
+            <TradeTable
+              onDataChange={handleTradeDataChange}
             />
           </div>
 
           {/* Right Column - Rich Summary */}
           <div className="lg:col-span-1">
-            {calculations && formData.entry && (
+            {tradeData.length > 0 && (
               <RichSummaryPanel
-                side={formData.side || 'LONG'}
-                contracts={parseFloat(formData.contracts) || 1}
-                instrument={formData.instrumentSymbol || 'MGC1!'}
+                side={tradeData[0]?.quantity >= 0 ? 'LONG' : 'SHORT'}
+                contracts={Math.abs(tradeData[0]?.quantity) || 1}
+                instrument={tradeData[0]?.instrument + '1!' || 'MGC1!'}
                 sessionTags={selectedSessions.map(id => 
                   sessionTags.find(tag => tag.id === id)?.label || id
                 )}
-                calculations={calculations}
-                entry={parseFloat(formData.entry)}
-                exit={formData.exit ? parseFloat(formData.exit) : undefined}
-                stopLoss={formData.stopLoss ? parseFloat(formData.stopLoss) : undefined}
-                profitTarget={formData.profitTarget ? parseFloat(formData.profitTarget) : undefined}
-                startTime={formData.startTime}
-                endTime={formData.endTime}
-                tradeRating={formData.tradeRating || 0}
+                calculations={{
+                  points: 0,
+                  ticks: 0,
+                  ticksPerContract: 0,
+                  totalTicks: 0,
+                  isOpen: true,
+                  grossPnl: tradeData.reduce((sum, fill) => sum + fill.grossPnl, 0),
+                  feesTotal: tradeData.reduce((sum, fill) => sum + fill.fee + fill.commission, 0),
+                  netPnl: tradeData.reduce((sum, fill) => sum + fill.grossPnl - fill.fee - fill.commission, 0),
+                  positionNotional: tradeData.reduce((sum, fill) => sum + fill.adjustedCost + fill.adjustedProceed, 0),
+                  tradeRiskDollar: 0,
+                  plannedRMultiple: null,
+                  realizedRMultiple: null,
+                  roiPercent: null,
+                  priceMFE: null,
+                  priceMAE: null,
+                  mfeTicks: null,
+                  maeTicks: null,
+                  mfeDollar: null,
+                  maeDollar: null
+                }}
+                entry={tradeData[0]?.price || 0}
+                exit={tradeData.length > 1 ? tradeData[tradeData.length - 1]?.price : undefined}
+                tradeRating={0}
               />
             )}
           </div>
