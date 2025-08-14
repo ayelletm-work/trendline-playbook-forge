@@ -76,9 +76,9 @@ ${exit ? `🏁 Exit: ${formatPrice(exit)}` : ''}
 ${stopLoss ? `🛡️ Stop Loss: ${formatPrice(stopLoss)}` : ''}
 ${profitTarget ? `🎯 Target: ${formatPrice(profitTarget)}` : ''}
 
-${calculations.plannedRMultiple ? `📐 Planned R: ${calculations.plannedRMultiple.toFixed(2)}` : ''}
-${calculations.realizedRMultiple ? `⭐ Realized R: ${calculations.realizedRMultiple.toFixed(2)}` : ''}
-${calculations.roiPercent ? `📊 ROI: ${calculations.roiPercent.toFixed(2)}%` : ''}
+${calculations.plannedRMultiple !== null && calculations.plannedRMultiple !== undefined ? `📐 Planned R: ${calculations.plannedRMultiple.toFixed(2)}` : ''}
+${calculations.realizedRMultiple !== null && calculations.realizedRMultiple !== undefined ? `⭐ Realized R: ${calculations.realizedRMultiple.toFixed(2)}` : ''}
+${calculations.roiPercent !== null && calculations.roiPercent !== undefined ? `📊 ROI: ${calculations.roiPercent.toFixed(2)}%` : ''}
 
 ${calculations.mfeDollar ? `📈 MFE: ${formatCurrency(calculations.mfeDollar)}` : ''}
 ${calculations.maeDollar ? `📉 MAE: ${formatCurrency(calculations.maeDollar)}` : ''}
@@ -187,7 +187,7 @@ ${calculations.maeDollar ? `📉 MAE: ${formatCurrency(calculations.maeDollar)}`
             <div className="font-semibold">{formatCurrency(calculations.feesTotal)}</div>
           </div>
           
-          {calculations.roiPercent !== undefined && (
+          {calculations.roiPercent !== null && calculations.roiPercent !== undefined && (
             <div className="p-2 bg-blue-50 rounded">
               <div className="text-gray-600">ROI</div>
               <div className="font-semibold text-blue-600">
@@ -196,7 +196,7 @@ ${calculations.maeDollar ? `📉 MAE: ${formatCurrency(calculations.maeDollar)}`
             </div>
           )}
           
-          {calculations.plannedRMultiple !== undefined && (
+          {calculations.plannedRMultiple !== null && calculations.plannedRMultiple !== undefined && (
             <div className="p-2 bg-purple-50 rounded">
               <div className="text-gray-600 flex items-center gap-1">
                 <Target size={12} />
@@ -208,7 +208,7 @@ ${calculations.maeDollar ? `📉 MAE: ${formatCurrency(calculations.maeDollar)}`
             </div>
           )}
           
-          {calculations.realizedRMultiple !== undefined && (
+          {calculations.realizedRMultiple !== null && calculations.realizedRMultiple !== undefined && (
             <div className="p-2 bg-amber-50 rounded">
               <div className="text-gray-600 flex items-center gap-1">
                 <Star size={12} />
@@ -222,11 +222,12 @@ ${calculations.maeDollar ? `📉 MAE: ${formatCurrency(calculations.maeDollar)}`
         </div>
 
         {/* MAE/MFE */}
-        {(calculations.mfeDollar !== undefined || calculations.maeDollar !== undefined) && (
+        {(calculations.mfeDollar !== null && calculations.mfeDollar !== undefined) || 
+         (calculations.maeDollar !== null && calculations.maeDollar !== undefined) && (
           <div className="space-y-2">
             <div className="text-sm font-medium text-gray-700">MAE / MFE</div>
             <div className="grid grid-cols-2 gap-2 text-sm">
-              {calculations.maeDollar !== undefined && (
+              {calculations.maeDollar !== null && calculations.maeDollar !== undefined && (
                 <div className="p-2 bg-red-50 rounded">
                   <div className="text-gray-600 flex items-center gap-1">
                     <TrendingDown size={12} />
@@ -241,7 +242,7 @@ ${calculations.maeDollar ? `📉 MAE: ${formatCurrency(calculations.maeDollar)}`
                 </div>
               )}
               
-              {calculations.mfeDollar !== undefined && (
+              {calculations.mfeDollar !== null && calculations.mfeDollar !== undefined && (
                 <div className="p-2 bg-green-50 rounded">
                   <div className="text-gray-600 flex items-center gap-1">
                     <TrendingUp size={12} />
