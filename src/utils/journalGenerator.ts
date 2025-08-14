@@ -22,6 +22,29 @@ export interface JournalData {
   positives: string[];
   negatives: string[];
   tags: string[];
+  // New fields from the trading interface
+  contractsTraded: string;
+  points: string;
+  ticks: string;
+  ticksPerContract: string;
+  commissionsAndFees: string;
+  netROI: string;
+  grossPL: string;
+  adjustedCost: string;
+  priceMAE: string; // Maximum Adverse Excursion
+  priceMFE: string; // Maximum Favorable Excursion
+  tradeRating: number; // 1-5 stars
+  profitTarget: string;
+  initialTarget: string;
+  tradeRisk: string;
+  plannedRMultiple: string;
+  realizedRMultiple: string;
+  averageEntry: string;
+  averageExit: string;
+  entryTime: string;
+  exitTime: string;
+  bestExitPrice: string;
+  bestExitTime: string;
 }
 
 export const generateJournalText = (data: JournalData): string => {
@@ -98,5 +121,28 @@ export const defaultJournalData: JournalData = {
   negatives: [
     'Could have been more patient on entry'
   ],
-  tags: ['Patience', 'Risk Management', 'Technical Analysis']
+  tags: ['Patience', 'Risk Management', 'Technical Analysis'],
+  // New fields with default values
+  contractsTraded: '',
+  points: '',
+  ticks: '',
+  ticksPerContract: '',
+  commissionsAndFees: '',
+  netROI: '',
+  grossPL: '',
+  adjustedCost: '',
+  priceMAE: '',
+  priceMFE: '',
+  tradeRating: 0,
+  profitTarget: '',
+  initialTarget: '',
+  tradeRisk: '',
+  plannedRMultiple: '',
+  realizedRMultiple: '',
+  averageEntry: '',
+  averageExit: '',
+  entryTime: '',
+  exitTime: '',
+  bestExitPrice: '',
+  bestExitTime: ''
 };
