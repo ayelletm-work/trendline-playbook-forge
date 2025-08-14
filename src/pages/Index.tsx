@@ -16,6 +16,7 @@ import { ThemeProvider, useTheme } from '../components/ThemeProvider';
 import Checklist from '../components/Checklist';
 import JournalForm from '../components/JournalForm';
 import JournalPreview from '../components/JournalPreview';
+import TradingRules from '../components/TradingRules';
 import Analyzer from '../components/Analyzer';
 import { JournalData, defaultJournalData } from '../utils/journalGenerator';
 
@@ -93,6 +94,7 @@ const MainContent: React.FC = () => {
 
         {currentTab === 0 && (
           <>
+            <TradingRules />
             <Box sx={{ 
               display: 'flex', 
               flexDirection: { xs: 'column', lg: 'row' }, 
