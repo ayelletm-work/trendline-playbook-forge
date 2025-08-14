@@ -15,20 +15,11 @@ import {
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { 
-  Calendar, 
-  Clock, 
-  Target, 
-  ArrowUp, 
-  ArrowDown, 
   PlusCircle,
   MinusCircle,
-  Hash,
   FileText,
-  DollarSign,
-  Calculator,
   Save,
-  Star,
-  LogOut
+  Star
 } from 'lucide-react';
 import { JournalData, defaultJournalData } from '../utils/journalGenerator';
 import { saveToLocalStorage, loadFromLocalStorage } from '../utils/localStorage';
@@ -448,8 +439,7 @@ const JournalForm: React.FC<JournalFormProps> = ({ onDataChange, onReset }) => {
       </Box>
 
       <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, mb: 3 }}>
-        <Box sx={{ flex: '1 1 200px', minWidth: 200, position: 'relative' }}>
-          <Calendar size={20} style={{ position: 'absolute', left: 12, top: 12, zIndex: 1, color: '#6b7280' }} />
+        <Box sx={{ flex: '1 1 200px', minWidth: 200 }}>
           <TextField
             fullWidth
             label="Date"
@@ -458,25 +448,20 @@ const JournalForm: React.FC<JournalFormProps> = ({ onDataChange, onReset }) => {
             size="small"
             sx={{ 
               '& .MuiOutlinedInput-root': { 
-                paddingLeft: '40px',
                 transition: 'all 0.3s ease',
                 '&:hover': { boxShadow: 'var(--shadow-soft)' }
               } 
             }}
           />
         </Box>
-        <Box sx={{ flex: '1 1 200px', minWidth: 200, position: 'relative' }}>
-          <Clock size={20} style={{ position: 'absolute', left: 12, top: 12, zIndex: 1, color: '#6b7280' }} />
+        <Box sx={{ flex: '1 1 200px', minWidth: 200 }}>
           <FormControl fullWidth size="small">
-            <InputLabel sx={{ paddingLeft: '40px' }}>Session</InputLabel>
+            <InputLabel>Session</InputLabel>
             <Select
               value={formData.session}
               onChange={(e) => handleInputChange('session', e.target.value)}
               label="Session"
               sx={{ 
-                '& .MuiSelect-select': { 
-                  paddingLeft: '40px'
-                },
                 '& .MuiOutlinedInput-root': { 
                   transition: 'all 0.3s ease',
                   '&:hover': { boxShadow: 'var(--shadow-soft)' }
@@ -490,8 +475,7 @@ const JournalForm: React.FC<JournalFormProps> = ({ onDataChange, onReset }) => {
             </Select>
           </FormControl>
         </Box>
-        <Box sx={{ flex: '1 1 100%', minWidth: 200, position: 'relative' }}>
-          <Target size={20} style={{ position: 'absolute', left: 12, top: 12, zIndex: 1, color: '#6b7280' }} />
+        <Box sx={{ flex: '1 1 100%', minWidth: 200 }}>
           <TextField
             fullWidth
             label="Setup Type"
@@ -500,7 +484,6 @@ const JournalForm: React.FC<JournalFormProps> = ({ onDataChange, onReset }) => {
             size="small"
             sx={{ 
               '& .MuiOutlinedInput-root': { 
-                paddingLeft: '40px',
                 transition: 'all 0.3s ease',
                 '&:hover': { boxShadow: 'var(--shadow-soft)' }
               } 
@@ -548,7 +531,7 @@ const JournalForm: React.FC<JournalFormProps> = ({ onDataChange, onReset }) => {
       </Box>
 
       <Box sx={{ mt: 3 }}>
-        {renderArrayInput('bullets', 'Bullets', '📍', Target)}
+        {renderArrayInput('bullets', 'Bullets', '📍', FileText)}
       </Box>
 
       <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, mb: 3 }}>
@@ -568,11 +551,9 @@ const JournalForm: React.FC<JournalFormProps> = ({ onDataChange, onReset }) => {
               }}
             >
               <MenuItem value="LONG">
-                <ArrowUp size={16} color="#16a34a" />
                 LONG
               </MenuItem>
               <MenuItem value="SHORT">
-                <ArrowDown size={16} color="#dc2626" />
                 SHORT
               </MenuItem>
             </Select>
@@ -653,8 +634,7 @@ const JournalForm: React.FC<JournalFormProps> = ({ onDataChange, onReset }) => {
             }}
           />
         </Box>
-        <Box sx={{ flex: '1 1 200px', minWidth: 200, position: 'relative' }}>
-          <DollarSign size={20} style={{ position: 'absolute', left: 12, top: 12, zIndex: 1, color: '#6b7280' }} />
+        <Box sx={{ flex: '1 1 200px', minWidth: 200 }}>
           <TextField
             fullWidth
             label="Account Balance"
@@ -667,15 +647,13 @@ const JournalForm: React.FC<JournalFormProps> = ({ onDataChange, onReset }) => {
             type="number"
             sx={{ 
               '& .MuiOutlinedInput-root': { 
-                paddingLeft: '40px',
                 transition: 'all 0.3s ease',
                 '&:hover': { boxShadow: 'var(--shadow-soft)' }
               } 
             }}
           />
         </Box>
-        <Box sx={{ flex: '1 1 200px', minWidth: 200, position: 'relative' }}>
-          <Calculator size={20} style={{ position: 'absolute', left: 12, top: 12, zIndex: 1, color: '#6b7280' }} />
+        <Box sx={{ flex: '1 1 200px', minWidth: 200 }}>
           <TextField
             fullWidth
             label="Risk (2% Auto-calc)"
@@ -684,7 +662,6 @@ const JournalForm: React.FC<JournalFormProps> = ({ onDataChange, onReset }) => {
             size="small"
             sx={{ 
               '& .MuiOutlinedInput-root': { 
-                paddingLeft: '40px',
                 transition: 'all 0.3s ease',
                 '&:hover': { boxShadow: 'var(--shadow-soft)' },
                 backgroundColor: isRiskManuallyEdited ? 'rgba(255, 193, 7, 0.1)' : 'rgba(34, 197, 94, 0.1)'
@@ -713,15 +690,13 @@ const JournalForm: React.FC<JournalFormProps> = ({ onDataChange, onReset }) => {
       {/* Exit Section */}
       <Box sx={{ mb: 3 }}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
-          <LogOut className="animate-pulse-slow" size={20} />
           <Typography variant="subtitle1" fontWeight="medium">
             🚪 Exit Details (Optional)
           </Typography>
         </Box>
         
         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
-          <Box sx={{ flex: '1 1 200px', minWidth: 200, position: 'relative' }}>
-            <LogOut size={20} style={{ position: 'absolute', left: 12, top: 12, zIndex: 1, color: '#6b7280' }} />
+          <Box sx={{ flex: '1 1 200px', minWidth: 200 }}>
             <TextField
               fullWidth
               label="Exit Price"
@@ -731,7 +706,6 @@ const JournalForm: React.FC<JournalFormProps> = ({ onDataChange, onReset }) => {
               placeholder="Enter exit price..."
               sx={{ 
                 '& .MuiOutlinedInput-root': { 
-                  paddingLeft: '40px',
                   transition: 'all 0.3s ease',
                   '&:hover': { boxShadow: 'var(--shadow-soft)' }
                 } 
@@ -790,12 +764,11 @@ const JournalForm: React.FC<JournalFormProps> = ({ onDataChange, onReset }) => {
         </Box>
       </Box>
 
-      {renderArrayInput('positives', 'Positives', '✅', Target)}
-      {renderArrayInput('negatives', 'Negatives', '❌', Target)}
+      {renderArrayInput('positives', 'Positives', '✅', FileText)}
+      {renderArrayInput('negatives', 'Negatives', '❌', FileText)}
 
       <Box sx={{ mb: 3 }}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
-          <Hash className="animate-pulse-slow" size={20} />
           <Typography variant="subtitle1">
             🧠 Tags
           </Typography>
