@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card, CardContent } from './ui/card';
-import { TrendingUp, Route, Target, Calendar, Eye } from 'lucide-react';
+import { TrendingUp, Route, Target, Calendar, Eye, Heart, Clock } from 'lucide-react';
 
 const TradingRules = () => {
   const rules = [
@@ -23,6 +23,14 @@ const TradingRules = () => {
     {
       text: "What I focus on grows",
       icon: Eye
+    },
+    {
+      text: "I celebrate others wins, without letting them define my worth",
+      icon: Heart
+    },
+    {
+      text: "Patience is my trading edge",
+      icon: Clock
     }
   ];
 
