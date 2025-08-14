@@ -206,16 +206,25 @@ const Checklist = () => {
         onClick={handleClick}
       >
         {sections.map((section, sectionIndex) => (
-          <Card key={sectionIndex} className="glass-effect hover-float hover-glow bg-gradient-to-r from-primary/5 to-secondary/5 border-primary/20 rounded-16 transition-all duration-300">
-            <CardHeader className="pb-4">
-              <CardTitle className="flex items-center gap-2">
-                <Badge variant="outline" className="bg-primary/10 text-primary border-primary/30 rounded-8 shadow-menu font-open-sans text-t-1">
-                  {section.badge}
-                </Badge>
-                <span className="text-primary font-titillium text-tit-lg font-semibold">{section.title}</span>
+          <Card key={sectionIndex} className="bg-card/80 border-border/30 hover:border-border/50 transition-all duration-300 hover:shadow-medium backdrop-blur-sm">
+            <CardHeader className="pb-4 px-8 pt-6">
+              <CardTitle className="flex items-center justify-between w-full">
+                <span className="text-foreground font-titillium text-tit-xl font-semibold tracking-wide">
+                  {section.title}
+                </span>
+                <div className="flex items-center gap-2">
+                  <div className="w-6 h-6 rounded-full bg-success flex items-center justify-center">
+                    <svg className="w-4 h-4 text-success-foreground" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                  <span className="font-open-sans text-t0 text-muted-foreground">
+                    {Math.round(Math.random() * 10) + 1} of {section.items.reduce((acc, item) => acc + item.tasks.length, 0)}
+                  </span>
+                </div>
               </CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="px-8 pb-8">
               {section.items.map((category, categoryIndex) => (
                 <div key={categoryIndex} className="mb-4 last:mb-0">
                   {category.category && (
